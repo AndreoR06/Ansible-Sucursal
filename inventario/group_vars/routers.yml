@@ -1,0 +1,18 @@
+---
+ansible_user: admin
+# Sin contraseñas en plano (Fase 2/Regla 4). Usar vault o entorno.
+ansible_connection: ansible.netcommon.network_cli
+ansible_network_os: cisco.ios.ios
+ansible_become: true
+ansible_become_method: enable
+ansible_network_cli_ssh_type: paramiko
+ansible_command_timeout: 60
+ansible_connect_timeout: 30
+dhcp_excluidos:
+  - "192.168.10.1 192.168.10.10"
+  - "192.168.20.1 192.168.20.10"
+  - "192.168.99.1 192.168.99.20"
+dhcp_pools:
+  - { name: POOL_VLAN10, network: "192.168.10.0 255.255.255.0", router: "192.168.10.1", dns: "8.8.8.8" }
+  - { name: POOL_VLAN20, network: "192.168.20.0 255.255.255.0", router: "192.168.20.1", dns: "8.8.8.8" }
+  - { name: POOL_VLAN99, network: "192.168.99.0 255.255.255.0", router: "192.168.99.1", dns: "8.8.8.8" }

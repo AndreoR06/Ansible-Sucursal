@@ -1,0 +1,180 @@
+AUDITORIA DE SUCURSAL 01 (Python, solo lectura)
+====================================================================================================
+Diseno: C:\Users\Andrew_06\Documents\sucursal\variables\sucursal_01.yml
+Evidencia: C:\Users\Andrew_06\Documents\sucursal\respaldos
+
+DISPOSITIVO: SW1 (alias SW-SUC-01-CORE)
+  running-config: SW1-running-config.txt
+  vlan brief: SW1-show-vlan-brief.txt
+BLOQUE: SW1
+----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+| ELEMENTO           | CHEQUEO     | ESPERADO              | ENCONTRADO            | ESTADO    |
+------------------------------------------------------------------------------------------------
+| VLAN 10            | existencia  | existe                | existe                | CUMPLE    |
+| VLAN 10            | nombre      | Datos                 | Datos                 | CUMPLE    |
+| VLAN 10            | estado      | active                | active                | CUMPLE    |
+| VLAN 20            | existencia  | existe                | existe                | CUMPLE    |
+| VLAN 20            | nombre      | Otra_Red              | Otra_Red              | CUMPLE    |
+| VLAN 20            | estado      | active                | active                | CUMPLE    |
+| VLAN 99            | existencia  | existe                | existe                | CUMPLE    |
+| VLAN 99            | nombre      | Nativa                | Nativa                | CUMPLE    |
+| VLAN 99            | estado      | active                | active                | CUMPLE    |
+| GigabitEthernet0/0 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet0/0 | acceso vlan | 10                    | 10                    | CUMPLE    |
+| GigabitEthernet0/0 | descripcion | PC-VLAN10-Datos       | PC-VLAN10-Datos       | CUMPLE    |
+| GigabitEthernet0/1 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet0/1 | acceso vlan | 10                    | 10                    | CUMPLE    |
+| GigabitEthernet0/1 | descripcion | PC-VLAN10-Datos       | PC-VLAN10-Datos       | CUMPLE    |
+| GigabitEthernet0/2 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet0/2 | acceso vlan | 20                    | 20                    | CUMPLE    |
+| GigabitEthernet0/2 | descripcion | PC-VLAN20-Otra_Red    | PC-VLAN20-Otra_Red    | CUMPLE    |
+| GigabitEthernet0/3 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet0/3 | acceso vlan | 20                    | 20                    | CUMPLE    |
+| GigabitEthernet0/3 | descripcion | PC-VLAN20-Otra_Red    | PC-VLAN20-Otra_Red    | CUMPLE    |
+| GigabitEthernet1/0 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet1/0 | acceso vlan | 99                    | 99                    | CUMPLE    |
+| GigabitEthernet1/0 | descripcion | ADMIN-VLAN99-Nativa   | ADMIN-VLAN99-Nativa   | CUMPLE    |
+| GigabitEthernet1/1 | modo trunk  | trunk                 | trunk                 | CUMPLE    |
+| GigabitEthernet1/1 | nativa      | 99                    | 99                    | CUMPLE    |
+| GigabitEthernet1/1 | permitidas  | 10,20,99              | 10,20,99              | CUMPLE    |
+| GigabitEthernet1/1 | descripcion | Uplink-Trunk-Nativa99 | Uplink-Trunk-Nativa99 | CUMPLE    |
+| GigabitEthernet1/2 | modo trunk  | trunk                 | trunk                 | CUMPLE    |
+| GigabitEthernet1/2 | nativa      | 99                    | 99                    | CUMPLE    |
+| GigabitEthernet1/2 | permitidas  | 10,20,99              | 10,20,99              | CUMPLE    |
+| GigabitEthernet1/2 | descripcion | Uplink-Trunk-Nativa99 | Uplink-Trunk-Nativa99 | CUMPLE    |
+------------------------------------------------------------------------------------------------
+Todo CUMPLE en este bloque.
+
+DISPOSITIVO: SW2 (alias SW-SUC-01-ACC1)
+  running-config: SW2-running-config.txt
+  vlan brief: SW2-show-vlan-brief.txt
+BLOQUE: SW2
+----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+| ELEMENTO           | CHEQUEO     | ESPERADO              | ENCONTRADO            | ESTADO    |
+------------------------------------------------------------------------------------------------
+| VLAN 10            | existencia  | existe                | existe                | CUMPLE    |
+| VLAN 10            | nombre      | Datos                 | Datos                 | CUMPLE    |
+| VLAN 10            | estado      | active                | active                | CUMPLE    |
+| VLAN 20            | existencia  | existe                | existe                | CUMPLE    |
+| VLAN 20            | nombre      | Otra_Red              | Otra_Red              | CUMPLE    |
+| VLAN 20            | estado      | active                | active                | CUMPLE    |
+| VLAN 99            | existencia  | existe                | existe                | CUMPLE    |
+| VLAN 99            | nombre      | Nativa                | Nativa                | CUMPLE    |
+| VLAN 99            | estado      | active                | active                | CUMPLE    |
+| GigabitEthernet0/1 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet0/1 | acceso vlan | 10                    | 10                    | CUMPLE    |
+| GigabitEthernet0/1 | descripcion | PC-VLAN10-Datos       | PC-VLAN10-Datos       | CUMPLE    |
+| GigabitEthernet0/2 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet0/2 | acceso vlan | 20                    | 20                    | CUMPLE    |
+| GigabitEthernet0/2 | descripcion | PC-VLAN20-Otra_Red    | PC-VLAN20-Otra_Red    | CUMPLE    |
+| GigabitEthernet0/3 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet0/3 | acceso vlan | 99                    | 99                    | CUMPLE    |
+| GigabitEthernet0/3 | descripcion | ADMIN-VLAN99-Nativa   | ADMIN-VLAN99-Nativa   | CUMPLE    |
+| GigabitEthernet0/0 | modo trunk  | trunk                 | trunk                 | CUMPLE    |
+| GigabitEthernet0/0 | nativa      | 99                    | 99                    | CUMPLE    |
+| GigabitEthernet0/0 | permitidas  | 10,20,99              | 10,20,99              | CUMPLE    |
+| GigabitEthernet0/0 | descripcion | Uplink-Trunk-Nativa99 | Uplink-Trunk-Nativa99 | CUMPLE    |
+| GigabitEthernet1/0 | modo trunk  | trunk                 | trunk                 | CUMPLE    |
+| GigabitEthernet1/0 | nativa      | 99                    | 99                    | CUMPLE    |
+| GigabitEthernet1/0 | permitidas  | 10,20,99              | 10,20,99              | CUMPLE    |
+| GigabitEthernet1/0 | descripcion | Uplink-Trunk-Nativa99 | Uplink-Trunk-Nativa99 | CUMPLE    |
+------------------------------------------------------------------------------------------------
+Todo CUMPLE en este bloque.
+
+DISPOSITIVO: SW3 (alias SW-SUC-01-ACC2)
+  running-config: SW3-running-config.txt
+  vlan brief: SW3-show-vlan-brief.txt
+BLOQUE: SW3
+----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+| ELEMENTO           | CHEQUEO     | ESPERADO              | ENCONTRADO            | ESTADO    |
+------------------------------------------------------------------------------------------------
+| VLAN 10            | existencia  | existe                | existe                | CUMPLE    |
+| VLAN 10            | nombre      | Datos                 | Datos                 | CUMPLE    |
+| VLAN 10            | estado      | active                | active                | CUMPLE    |
+| VLAN 20            | existencia  | existe                | existe                | CUMPLE    |
+| VLAN 20            | nombre      | Otra_Red              | Otra_Red              | CUMPLE    |
+| VLAN 20            | estado      | active                | active                | CUMPLE    |
+| VLAN 99            | existencia  | existe                | existe                | CUMPLE    |
+| VLAN 99            | nombre      | Nativa                | Nativa                | CUMPLE    |
+| VLAN 99            | estado      | active                | active                | CUMPLE    |
+| GigabitEthernet0/0 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet0/0 | acceso vlan | 10                    | 10                    | CUMPLE    |
+| GigabitEthernet0/0 | descripcion | PC-VLAN10-Datos       | PC-VLAN10-Datos       | CUMPLE    |
+| GigabitEthernet0/1 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet0/1 | acceso vlan | 10                    | 10                    | CUMPLE    |
+| GigabitEthernet0/1 | descripcion | PC-VLAN10-Datos       | PC-VLAN10-Datos       | CUMPLE    |
+| GigabitEthernet0/2 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet0/2 | acceso vlan | 20                    | 20                    | CUMPLE    |
+| GigabitEthernet0/2 | descripcion | PC-VLAN20-Otra_Red    | PC-VLAN20-Otra_Red    | CUMPLE    |
+| GigabitEthernet0/3 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet0/3 | acceso vlan | 20                    | 20                    | CUMPLE    |
+| GigabitEthernet0/3 | descripcion | PC-VLAN20-Otra_Red    | PC-VLAN20-Otra_Red    | CUMPLE    |
+| GigabitEthernet1/0 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet1/0 | acceso vlan | 99                    | 99                    | CUMPLE    |
+| GigabitEthernet1/0 | descripcion | ADMIN-VLAN99-Nativa   | ADMIN-VLAN99-Nativa   | CUMPLE    |
+| GigabitEthernet1/1 | modo trunk  | trunk                 | trunk                 | CUMPLE    |
+| GigabitEthernet1/1 | nativa      | 99                    | 99                    | CUMPLE    |
+| GigabitEthernet1/1 | permitidas  | 10,20,99              | 10,20,99              | CUMPLE    |
+| GigabitEthernet1/1 | descripcion | Uplink-Trunk-Nativa99 | Uplink-Trunk-Nativa99 | CUMPLE    |
+| GigabitEthernet1/2 | modo trunk  | trunk                 | trunk                 | CUMPLE    |
+| GigabitEthernet1/2 | nativa      | 99                    | 99                    | CUMPLE    |
+| GigabitEthernet1/2 | permitidas  | 10,20,99              | 10,20,99              | CUMPLE    |
+| GigabitEthernet1/2 | descripcion | Uplink-Trunk-Nativa99 | Uplink-Trunk-Nativa99 | CUMPLE    |
+------------------------------------------------------------------------------------------------
+Todo CUMPLE en este bloque.
+
+DISPOSITIVO: SW4 (alias SW-SUC-01-ACC3)
+  running-config: SW4-running-config.txt
+  vlan brief: SW4-show-vlan-brief.txt
+BLOQUE: SW4
+----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+| ELEMENTO           | CHEQUEO     | ESPERADO              | ENCONTRADO            | ESTADO    |
+------------------------------------------------------------------------------------------------
+| VLAN 10            | existencia  | existe                | existe                | CUMPLE    |
+| VLAN 10            | nombre      | Datos                 | Datos                 | CUMPLE    |
+| VLAN 10            | estado      | active                | active                | CUMPLE    |
+| VLAN 20            | existencia  | existe                | existe                | CUMPLE    |
+| VLAN 20            | nombre      | Otra_Red              | Otra_Red              | CUMPLE    |
+| VLAN 20            | estado      | active                | active                | CUMPLE    |
+| VLAN 99            | existencia  | existe                | existe                | CUMPLE    |
+| VLAN 99            | nombre      | Nativa                | Nativa                | CUMPLE    |
+| VLAN 99            | estado      | active                | active                | CUMPLE    |
+| GigabitEthernet0/1 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet0/1 | acceso vlan | 10                    | 10                    | CUMPLE    |
+| GigabitEthernet0/1 | descripcion | PC-VLAN10-Datos       | PC-VLAN10-Datos       | CUMPLE    |
+| GigabitEthernet0/2 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet0/2 | acceso vlan | 20                    | 20                    | CUMPLE    |
+| GigabitEthernet0/2 | descripcion | PC-VLAN20-Otra_Red    | PC-VLAN20-Otra_Red    | CUMPLE    |
+| GigabitEthernet0/3 | modo access | access                | access                | CUMPLE    |
+| GigabitEthernet0/3 | acceso vlan | 99                    | 99                    | CUMPLE    |
+| GigabitEthernet0/3 | descripcion | ADMIN-VLAN99-Nativa   | ADMIN-VLAN99-Nativa   | CUMPLE    |
+| GigabitEthernet0/0 | modo trunk  | trunk                 | trunk                 | CUMPLE    |
+| GigabitEthernet0/0 | nativa      | 99                    | 99                    | CUMPLE    |
+| GigabitEthernet0/0 | permitidas  | 10,20,99              | 10,20,99              | CUMPLE    |
+| GigabitEthernet0/0 | descripcion | Uplink-Trunk-Nativa99 | Uplink-Trunk-Nativa99 | CUMPLE    |
+------------------------------------------------------------------------------------------------
+Todo CUMPLE en este bloque.
+
+DISPOSITIVO: Router_MB (alias R-SUC-01)
+  running-config: Router_MB-running-config.txt
+BLOQUE: Router_MB
+----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+| ELEMENTO              | CHEQUEO       | ESPERADO        | ENCONTRADO      | ESTADO    |
+-----------------------------------------------------------------------------------------
+| GigabitEthernet0/1.10 | encapsulacion | dot1Q 10        | dot1Q 10        | CUMPLE    |
+| GigabitEthernet0/1.10 | ip            | 192.168.10.1/24 | 192.168.10.1/24 | CUMPLE    |
+| GigabitEthernet0/1.20 | encapsulacion | dot1Q 20        | dot1Q 20        | CUMPLE    |
+| GigabitEthernet0/1.20 | ip            | 192.168.20.1/24 | 192.168.20.1/24 | CUMPLE    |
+| GigabitEthernet0/1.99 | encapsulacion | dot1Q 99 native | dot1Q 99 native | CUMPLE    |
+| GigabitEthernet0/1.99 | ip            | 192.168.99.1/24 | 192.168.99.1/24 | CUMPLE    |
+-----------------------------------------------------------------------------------------
+Todo CUMPLE en este bloque.
+
+====================================================================================================
+RESUMEN: 118 CUMPLE, 0 NO CUMPLE
+CUMPLIMIENTO GLOBAL: CUMPLE

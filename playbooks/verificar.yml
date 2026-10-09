@@ -1,0 +1,15 @@
+---
+- name: Verificar VLANs y trunks
+  hosts: switches
+  gather_facts: false
+  connection: ansible.netcommon.network_cli
+  tasks:
+    - name: Consultar estado
+      cisco.ios.ios_command:
+        commands:
+          - show vlan brief
+          - show interfaces trunk
+      register: salida
+    - name: Mostrar resultado
+      ansible.builtin.debug:
+        msg: "{{ salida.stdout_lines }}"

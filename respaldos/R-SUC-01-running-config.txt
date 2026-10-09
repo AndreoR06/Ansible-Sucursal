@@ -1,0 +1,49 @@
+! Evidencia de ejemplo - running-config Router_MB (sin secretos)
+hostname Router_MB
+!
+interface GigabitEthernet0/1
+ no shutdown
+!
+interface GigabitEthernet0/1.10
+ encapsulation dot1Q 10
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+!
+interface GigabitEthernet0/1.20
+ encapsulation dot1Q 20
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+!
+interface GigabitEthernet0/1.99
+ encapsulation dot1Q 99 native
+ ip address 192.168.99.1 255.255.255.0
+ no shutdown
+!
+ip dhcp excluded-address 192.168.10.1 192.168.10.10
+ip dhcp excluded-address 192.168.20.1 192.168.20.10
+ip dhcp excluded-address 192.168.99.1 192.168.99.20
+!
+ip dhcp pool POOL_VLAN10
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.1
+ dns-server 8.8.8.8
+ lease 7
+!
+ip dhcp pool POOL_VLAN20
+ network 192.168.20.0 255.255.255.0
+ default-router 192.168.20.1
+ dns-server 8.8.8.8
+ lease 7
+!
+ip dhcp pool POOL_VLAN99
+ network 192.168.99.0 255.255.255.0
+ default-router 192.168.99.1
+ dns-server 8.8.8.8
+ lease 7
+!
+line con 0
+ logging synchronous
+line vty 0 4
+ transport input ssh
+!
+end

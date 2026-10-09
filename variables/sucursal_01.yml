@@ -1,0 +1,88 @@
+---
+# Diseño esperado - Sucursal 01 (Actividad 1, Fase 2)
+# Equipos: R-SUC-01, SW-SUC-01-CORE (.2), SW-SUC-01-ACC1 (.3). Sin Switch1.
+sucursal: sucursal_01
+descripcion: Diseno esperado con VLAN USUARIOS_VLAN10/20 y GESTION
+
+vlans_esperadas:
+  - id: 10
+    nombre: USUARIOS_VLAN10
+    estado: active
+  - id: 20
+    nombre: USUARIOS_VLAN20
+    estado: active
+  - id: 99
+    nombre: GESTION
+    estado: active
+
+trunk:
+  native_vlan: 99
+  allowed_vlans: [10, 20, 99]
+
+switches:
+  SW-SUC-01-CORE:
+    mgmt_ip: 192.168.99.2/24
+    puertos_acceso:
+      - puerto: GigabitEthernet0/1
+        vlan: 10
+        descripcion: Acceso VLAN10 USUARIOS
+      - puerto: GigabitEthernet0/2
+        vlan: 10
+        descripcion: Acceso VLAN10 USUARIOS
+      - puerto: GigabitEthernet1/0
+        vlan: 20
+        descripcion: Acceso VLAN20 USUARIOS
+      - puerto: GigabitEthernet1/1
+        vlan: 20
+        descripcion: Acceso VLAN20 USUARIOS
+      - puerto: GigabitEthernet0/3
+        vlan: 99
+        descripcion: Acceso VLAN99 GESTION
+    puertos_trunk:
+      - puerto: GigabitEthernet0/0
+        native_vlan: 99
+        allowed_vlans: [10, 20, 99]
+        descripcion: Hacia R-SUC-01 - Troncal Nativa99
+      - puerto: GigabitEthernet1/2
+        native_vlan: 99
+        allowed_vlans: [10, 20, 99]
+        descripcion: Hacia SW-SUC-01-ACC1 Gi0/0 - Troncal Nativa99
+
+  SW-SUC-01-ACC1:
+    mgmt_ip: 192.168.99.3/24
+    puertos_acceso:
+      - puerto: GigabitEthernet0/1
+        vlan: 10
+        descripcion: PC5 - VLAN10 USUARIOS
+      - puerto: GigabitEthernet0/2
+        vlan: 20
+        descripcion: PC6 - VLAN20 USUARIOS
+      - puerto: GigabitEthernet0/3
+        vlan: 99
+        descripcion: PC8 - VLAN99 GESTION
+    puertos_trunk:
+      - puerto: GigabitEthernet0/0
+        native_vlan: 99
+        allowed_vlans: [10, 20, 99]
+        descripcion: Hacia SW-SUC-01-CORE Gi1/2 - Troncal Nativa99
+
+routers:
+  R-SUC-01:
+    interfaz_fisica: GigabitEthernet0/1
+    hacia: SW-SUC-01-CORE
+    subinterfaces:
+      - id: 10
+        interfaz: GigabitEthernet0/1.10
+        encapsulation: 10
+        native: false
+        ip: 192.168.10.1/24
+      - id: 20
+        interfaz: GigabitEthernet0/1.20
+        encapsulation: 20
+        native: false
+        ip: 192.168.20.1/24
+      - id: 99
+        interfaz: GigabitEthernet0/1.99
+        encapsulation: 99
+        native: true
+        ip: 192.168.99.1/24

@@ -1,0 +1,13 @@
+---
+- name: Crear VLANs en los switches de la sucursal
+  hosts: switches
+  gather_facts: false
+  connection: ansible.netcommon.network_cli
+  tasks:
+    - name: Crear VLANs 10, 20 y 99
+      cisco.ios.ios_vlans:
+        config: "{{ vlans_sucursal }}"
+        state: merged
+    - name: Guardar configuracion
+      cisco.ios.ios_config:
+        save_when: modified

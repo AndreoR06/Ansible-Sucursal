@@ -1,0 +1,18 @@
+---
+ansible_user: admin
+# Sin contraseñas en plano (Fase 2/Regla 4). Usar vault o entorno:
+#   ansible_password: "{{ vault_ansible_password }}"
+#   ansible_become_password: "{{ vault_enable_password }}"
+ansible_connection: ansible.netcommon.network_cli
+ansible_network_os: cisco.ios.ios
+ansible_become: true
+ansible_become_method: enable
+ansible_network_cli_ssh_type: paramiko
+ansible_command_timeout: 60
+ansible_connect_timeout: 30
+vlans_sucursal:
+  - { vlan_id: 10, name: USUARIOS_VLAN10, state: active }
+  - { vlan_id: 20, name: USUARIOS_VLAN20, state: active }
+  - { vlan_id: 99, name: GESTION, state: active }
+trunk_allowed_vlans: "10,20,99"
+trunk_native_vlan: 99

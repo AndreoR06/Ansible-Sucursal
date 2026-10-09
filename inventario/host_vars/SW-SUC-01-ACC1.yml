@@ -1,0 +1,9 @@
+---
+# SW-SUC-01-ACC1 - gestion 192.168.99.3/24 (Fase 2)
+mgmt_ip: 192.168.99.3/24
+puertos_trunk:
+  - { name: GigabitEthernet0/0, native_vlan: 99, descripcion: "Hacia SW-SUC-01-CORE Gi1/2 - Troncal Nativa99" }
+puertos_acceso:
+  - { name: GigabitEthernet0/1, vlan: 10, descripcion: "PC5 - VLAN10 USUARIOS" }
+  - { name: GigabitEthernet0/2, vlan: 20, descripcion: "PC6 - VLAN20 USUARIOS" }
+  - { name: GigabitEthernet0/3, vlan: 99, descripcion: "PC8 - VLAN99 GESTION" }
