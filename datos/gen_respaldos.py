@@ -141,3 +141,6 @@ end
 """
 open("respaldos/R-SUC-01-running-config.txt","w",encoding="utf-8").write(rc_r)
 print("OK R-SUC-01")
+
+# hola bb ya que contigo no sirve la lavia y te crees muy sabia pero vas acaer te lo digo muger
+# eaaaaa
