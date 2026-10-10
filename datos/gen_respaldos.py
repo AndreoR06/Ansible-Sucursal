@@ -1,26 +1,28 @@
 import os
-import shutil
-from collections import defaultdict
 
 # Datos base (coherentes con variables/sucursal_01.yml)
+# Formato acceso: (interfaz, vlan, descripcion)
+# Formato trunk: (interfaz, descripcion)
 switches = {
-    "SW1": {
-        "acceso": [("GigabitEthernet0/0",10,"PC-VLAN10-Datos"),("GigabitEthernet0/1",10,"PC-VLAN10-Datos"),("GigabitEthernet0/2",20,"PC-VLAN20-Otra_Red"),("GigabitEthernet0/3",20,"PC-VLAN20-Otra_Red"),("GigabitEthernet1/0",99,"ADMIN-VLAN99-Nativa")],
-        "trunk": [("GigabitEthernet1/1",),("GigabitEthernet1/2",)],
+    "SW-SUC-01-CORE": {
+        "acceso": [("GigabitEthernet0/0",10,"PC2 - VLAN10"),("GigabitEthernet0/1",10,"PC3 - VLAN10"),("GigabitEthernet0/2",20,"PC5 - VLAN20"),("GigabitEthernet0/3",20,"PC4 - VLAN20"),("GigabitEthernet1/0",99,"PC6 - VLAN99")],
+        "trunk": [("GigabitEthernet1/1","Hacia R-SUC-01 - Troncal Nativa99"),("GigabitEthernet1/2","Hacia SW-SUC-01-ACC1 Gi0/0 - Troncal Nativa99")],
     },
-    "SW2": {
-        "acceso": [("GigabitEthernet0/1",10,"PC-VLAN10-Datos"),("GigabitEthernet0/2",20,"PC-VLAN20-Otra_Red"),("GigabitEthernet0/3",99,"ADMIN-VLAN99-Nativa")],
-        "trunk": [("GigabitEthernet0/0",),("GigabitEthernet1/0",)],
+    "SW-SUC-01-ACC1": {
+        "acceso": [("GigabitEthernet0/1",10,"PC7 - VLAN10"),("GigabitEthernet0/2",99,"Switch1 - VLAN99"),("GigabitEthernet0/3",20,"PC8 - VLAN20")],
+        "trunk": [("GigabitEthernet0/0","Hacia SW-SUC-01-CORE Gi1/2 - Troncal Nativa99"),("GigabitEthernet1/0","Hacia SW-SUC-01-ACC2 Gi1/1 - Troncal Nativa99")],
     },
-    "SW3": {
-        "acceso": [("GigabitEthernet0/0",10,"PC-VLAN10-Datos"),("GigabitEthernet0/1",10,"PC-VLAN10-Datos"),("GigabitEthernet0/2",20,"PC-VLAN20-Otra_Red"),("GigabitEthernet0/3",20,"PC-VLAN20-Otra_Red"),("GigabitEthernet1/0",99,"ADMIN-VLAN99-Nativa")],
-        "trunk": [("GigabitEthernet1/1",),("GigabitEthernet1/2",)],
+    "SW-SUC-01-ACC2": {
+        "acceso": [("GigabitEthernet0/0",10,"PC12 - VLAN10"),("GigabitEthernet0/1",10,"PC14 - VLAN10"),("GigabitEthernet0/2",20,"PC10 - VLAN20"),("GigabitEthernet0/3",20,"PC11 - VLAN20"),("GigabitEthernet1/0",99,"PC13 - VLAN99")],
+        "trunk": [("GigabitEthernet1/1","Hacia SW-SUC-01-ACC1 Gi1/0 - Troncal Nativa99"),("GigabitEthernet1/2","Hacia SW-SUC-01-ACC3 Gi0/0 - Troncal Nativa99")],
     },
-    "SW4": {
-        "acceso": [("GigabitEthernet0/1",10,"PC-VLAN10-Datos"),("GigabitEthernet0/2",20,"PC-VLAN20-Otra_Red"),("GigabitEthernet0/3",99,"ADMIN-VLAN99-Nativa")],
-        "trunk": [("GigabitEthernet0/0",)],
+    "SW-SUC-01-ACC3": {
+        "acceso": [("GigabitEthernet0/1",10,"PC16 - VLAN10"),("GigabitEthernet0/2",99,"Switch2 - VLAN99"),("GigabitEthernet0/3",20,"PC17 - VLAN20")],
+        "trunk": [("GigabitEthernet0/0","Hacia SW-SUC-01-ACC2 Gi1/2 - Troncal Nativa99")],
     },
 }
+
+from collections import defaultdict
 
 def short(iface):
     return iface.replace("GigabitEthernet","Gi").replace("FastEthernet","Fa")
@@ -31,13 +33,13 @@ def running_switch(host, acceso, trunk):
     l.append(f"hostname {host}")
     l.append("!")
     l.append("vlan 10")
-    l.append(" name Datos")
+    l.append(" name USUARIOS_VLAN10")
     l.append("!")
     l.append("vlan 20")
-    l.append(" name Otra_Red")
+    l.append(" name USUARIOS_VLAN20")
     l.append("!")
     l.append("vlan 99")
-    l.append(" name Nativa")
+    l.append(" name GESTION")
     l.append("!")
     for iface, vlan, desc in acceso:
         l.append(f"interface {iface}")
@@ -47,9 +49,9 @@ def running_switch(host, acceso, trunk):
         l.append(" spanning-tree portfast")
         l.append(" no shutdown")
         l.append("!")
-    for (iface,) in trunk:
+    for iface, desc in trunk:
         l.append(f"interface {iface}")
-        l.append(" description Uplink-Trunk-Nativa99")
+        l.append(f" description {desc}")
         l.append(" switchport trunk encapsulation dot1q")
         l.append(" switchport mode trunk")
         l.append(" switchport trunk native vlan 99")
@@ -65,7 +67,8 @@ def running_switch(host, acceso, trunk):
     return "\n".join(l)+"\n"
 
 def vlan_brief(host, acceso):
-    grp=defaultdict(list)
+    from collections import defaultdict as dd
+    grp=dd(list)
     for iface,vlan,desc in acceso:
         grp[vlan].append(short(iface))
     l=[]
@@ -74,7 +77,7 @@ def vlan_brief(host, acceso):
     l.append("---- -------------------------------- --------- -------------------------------")
     l.append("1    default                          active    Gi0/4, Gi0/5, Gi0/6, Gi0/7")
     for vid in [10,20,99]:
-        nombre={"10":"Datos","20":"Otra_Red","99":"Nativa"}[str(vid)]
+        nombre={"10":"USUARIOS_VLAN10","20":"USUARIOS_VLAN20","99":"GESTION"}[str(vid)]
         puertos=", ".join(sorted(grp[vid]))
         l.append(f"{vid:<4} {nombre:<32} active    {puertos}")
     l.append("1002 fddi-default                     act/unsup")
@@ -91,8 +94,8 @@ for host, d in switches.items():
     open(f"respaldos/{host}-show-vlan-brief.txt","w",encoding="utf-8").write(vb)
     print(f"OK {host}")
 
-rc_r = """! Evidencia de ejemplo - running-config Router_MB (sin secretos)
-hostname Router_MB
+rc_r = """! Evidencia de ejemplo - running-config R-SUC-01 (sin secretos)
+hostname R-SUC-01
 !
 interface GigabitEthernet0/1
  no shutdown
@@ -112,9 +115,9 @@ interface GigabitEthernet0/1.99
  ip address 192.168.99.1 255.255.255.0
  no shutdown
 !
-ip dhcp excluded-address 192.168.10.1 192.168.10.10
-ip dhcp excluded-address 192.168.20.1 192.168.20.10
-ip dhcp excluded-address 192.168.99.1 192.168.99.20
+ip dhcp excluded-address 192.168.10.1 192.168.10.30
+ip dhcp excluded-address 192.168.20.1 192.168.20.30
+ip dhcp excluded-address 192.168.99.1 192.168.99.30
 !
 ip dhcp pool POOL_VLAN10
  network 192.168.10.0 255.255.255.0
@@ -134,19 +137,7 @@ ip dhcp pool POOL_VLAN99
  dns-server 8.8.8.8
  lease 7
 !
-line con 0
- logging synchronous
-line vty 0 4
- transport input ssh
-!
 end
 """
-open("respaldos/Router_MB-running-config.txt","w",encoding="utf-8").write(rc_r)
-print("OK Router_MB")
-
-shutil.copyfile("respaldos/SW1-running-config.txt","respaldos/SW-SUC-01-CORE-running-config.txt")
-shutil.copyfile("respaldos/SW1-show-vlan-brief.txt","respaldos/SW-SUC-01-CORE-show-vlan-brief.txt")
-shutil.copyfile("respaldos/SW2-running-config.txt","respaldos/SW-SUC-01-ACC1-running-config.txt")
-shutil.copyfile("respaldos/SW2-show-vlan-brief.txt","respaldos/SW-SUC-01-ACC1-show-vlan-brief.txt")
-shutil.copyfile("respaldos/Router_MB-running-config.txt","respaldos/R-SUC-01-running-config.txt")
-print("OK alias CORE/ACC1/R")
+open("respaldos/R-SUC-01-running-config.txt","w",encoding="utf-8").write(rc_r)
+print("OK R-SUC-01")

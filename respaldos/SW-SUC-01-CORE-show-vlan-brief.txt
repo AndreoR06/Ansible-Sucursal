@@ -1,11 +1,11 @@
-! Evidencia de ejemplo - show vlan brief (SW1)
+! Evidencia de ejemplo - show vlan brief (SW-SUC-01-CORE)
 VLAN Name                             Status    Ports
 ---- -------------------------------- --------- -------------------------------
 1    default                          active    Gi0/4, Gi0/5, Gi0/6, Gi0/7
-10   Datos                            active    Gi0/0, Gi0/1
-20   Otra_Red                         active    Gi0/2, Gi0/3
-99   Nativa                           active    Gi1/0
+10   USUARIOS_VLAN10                  active    Gi0/0, Gi0/1
+20   USUARIOS_VLAN20                  active    Gi0/2, Gi0/3
+99   GESTION                          active    Gi1/0
 1002 fddi-default                     act/unsup
 1003 token-ring-default               act/unsup
-1004 fddinet-default                  act/unsup
+1004 fddinet-default                    act/unsup
 1005 trnet-default                    act/unsup

@@ -1,5 +1,5 @@
 ---
-- name: Configurar Router-MB router-on-a-stick + DHCP
+- name: Configurar R-SUC-01 router-on-a-stick + DHCP
   hosts: routers
   gather_facts: false
   connection: ansible.netcommon.network_cli
@@ -11,6 +11,7 @@
           - ip address 192.168.10.1 255.255.255.0
           - no shutdown
         parents: interface GigabitEthernet0/1.10
+
     - name: Subinterfaz VLAN 20
       cisco.ios.ios_config:
         lines:
@@ -18,6 +19,7 @@
           - ip address 192.168.20.1 255.255.255.0
           - no shutdown
         parents: interface GigabitEthernet0/1.20
+
     - name: Subinterfaz VLAN 99 nativa
       cisco.ios.ios_config:
         lines:
@@ -25,16 +27,19 @@
           - ip address 192.168.99.1 255.255.255.0
           - no shutdown
         parents: interface GigabitEthernet0/1.99
+
     - name: Fisica Gi0/1 arriba
       cisco.ios.ios_config:
         lines:
           - no shutdown
         parents: interface GigabitEthernet0/1
+
     - name: Excluir IPs estaticas
       cisco.ios.ios_config:
         lines:
           - "ip dhcp excluded-address {{ item }}"
       loop: "{{ dhcp_excluidos }}"
+
     - name: Pools DHCP
       cisco.ios.ios_config:
         lines:
@@ -44,6 +49,17 @@
           - lease 7
         parents: "ip dhcp pool {{ item.name }}"
       loop: "{{ dhcp_pools }}"
+
     - name: Guardar
       cisco.ios.ios_config:
         save_when: modified
+
+    - name: Ver bindings DHCP
+      cisco.ios.ios_command:
+        commands:
+          - show ip dhcp binding
+      register: dhcp_bind
+
+    - name: Mostrar bindings
+      ansible.builtin.debug:
+        var: dhcp_bind.stdout_lines

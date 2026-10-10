@@ -1,0 +1,10 @@
+mgmt_ip: 192.168.99.16
+puertos_trunk:
+  - { name: GigabitEthernet1/1, native_vlan: 99, descripcion: "Hacia SW-SUC-01-ACC1 Gi1/0 - Troncal Nativa99" }
+  - { name: GigabitEthernet1/2, native_vlan: 99, descripcion: "Hacia SW-SUC-01-ACC3 Gi0/0 - Troncal Nativa99" }
+puertos_acceso:
+  - { name: GigabitEthernet0/0, vlan: 10, descripcion: "PC12 - VLAN10" }
+  - { name: GigabitEthernet0/1, vlan: 10, descripcion: "PC14 - VLAN10" }
+  - { name: GigabitEthernet0/2, vlan: 20, descripcion: "PC10 - VLAN20" }
+  - { name: GigabitEthernet0/3, vlan: 20, descripcion: "PC11 - VLAN20" }
+  - { name: GigabitEthernet1/0, vlan: 99, descripcion: "PC13 - VLAN99" }

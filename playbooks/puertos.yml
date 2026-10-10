@@ -4,6 +4,20 @@
   gather_facts: false
   connection: ansible.netcommon.network_cli
   tasks:
+    - name: SVI de gestion VLAN 99
+      cisco.ios.ios_config:
+        lines:
+          - ip address {{ mgmt_ip }} {{ mgmt_mask | default('255.255.255.0') }}
+          - no shutdown
+        parents: interface Vlan99
+      when: mgmt_ip is defined
+
+    - name: Gateway de gestion
+      cisco.ios.ios_config:
+        lines:
+          - ip default-gateway 192.168.99.1
+      when: mgmt_ip is defined
+
     - name: Configurar puertos de acceso para PCs
       cisco.ios.ios_l2_interfaces:
         config:
@@ -14,6 +28,7 @@
         state: merged
       loop: "{{ puertos_acceso | default([]) }}"
       when: puertos_acceso is defined
+
     - name: Configurar puertos trunk entre switches y hacia router
       cisco.ios.ios_config:
         parents: "interface {{ item.name }}"
@@ -25,6 +40,15 @@
           - no shutdown
       loop: "{{ puertos_trunk | default([]) }}"
       when: puertos_trunk is defined
+
+    - name: Descripciones de interfaces
+      cisco.ios.ios_config:
+        parents: "interface {{ item.name }}"
+        lines:
+          - description {{ item.descripcion }}
+      loop: "{{ (puertos_acceso | default([])) + (puertos_trunk | default([])) }}"
+      when: item.descripcion is defined
+
     - name: Guardar configuracion
       cisco.ios.ios_config:
         save_when: modified

@@ -1,52 +1,52 @@
 ! Evidencia de ejemplo - running-config (sin secretos)
-hostname SW1
+hostname SW-SUC-01-CORE
 !
 vlan 10
- name Datos
+ name USUARIOS_VLAN10
 !
 vlan 20
- name Otra_Red
+ name USUARIOS_VLAN20
 !
 vlan 99
- name Nativa
+ name GESTION
 !
 interface GigabitEthernet0/0
- description PC-VLAN10-Datos
+ description PC2 - VLAN10
  switchport mode access
  switchport access vlan 10
  spanning-tree portfast
  no shutdown
 !
 interface GigabitEthernet0/1
- description PC-VLAN10-Datos
+ description PC3 - VLAN10
  switchport mode access
  switchport access vlan 10
  spanning-tree portfast
  no shutdown
 !
 interface GigabitEthernet0/2
- description PC-VLAN20-Otra_Red
+ description PC5 - VLAN20
  switchport mode access
  switchport access vlan 20
  spanning-tree portfast
  no shutdown
 !
 interface GigabitEthernet0/3
- description PC-VLAN20-Otra_Red
+ description PC4 - VLAN20
  switchport mode access
  switchport access vlan 20
  spanning-tree portfast
  no shutdown
 !
 interface GigabitEthernet1/0
- description ADMIN-VLAN99-Nativa
+ description PC6 - VLAN99
  switchport mode access
  switchport access vlan 99
  spanning-tree portfast
  no shutdown
 !
 interface GigabitEthernet1/1
- description Uplink-Trunk-Nativa99
+ description Hacia R-SUC-01 - Troncal Nativa99
  switchport trunk encapsulation dot1q
  switchport mode trunk
  switchport trunk native vlan 99
@@ -54,7 +54,7 @@ interface GigabitEthernet1/1
  no shutdown
 !
 interface GigabitEthernet1/2
- description Uplink-Trunk-Nativa99
+ description Hacia SW-SUC-01-ACC1 Gi0/0 - Troncal Nativa99
  switchport trunk encapsulation dot1q
  switchport mode trunk
  switchport trunk native vlan 99

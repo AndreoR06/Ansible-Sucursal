@@ -1,0 +1,5 @@
+---
+# Copia este archivo como inventario/group_vars/vault.yml (ignorado por git,
+# patron *vault* en .gitignore) y coloca las claves reales de los equipos.
+vault_ansible_password: "CAMBIAR_CLAVE_SSH"
+vault_enable_password: "CAMBIAR_CLAVE_ENABLE"

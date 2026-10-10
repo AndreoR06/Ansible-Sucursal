@@ -1,6 +1,9 @@
----
+﻿---
 ansible_user: admin
-# Sin contraseñas en plano (Fase 2/Regla 4). Usar vault o entorno.
+# Credenciales fuera del repo (Fase 2/Regla 4). Crear inventario/group_vars/vault.yml
+# a partir de credenciales.ejemplo.yml (ese archivo SI esta ignorado por git):
+ansible_password: "{{ vault_ansible_password }}"
+ansible_become_password: "{{ vault_enable_password }}"
 ansible_connection: ansible.netcommon.network_cli
 ansible_network_os: cisco.ios.ios
 ansible_become: true
@@ -11,7 +14,7 @@ ansible_connect_timeout: 30
 dhcp_excluidos:
   - "192.168.10.1 192.168.10.10"
   - "192.168.20.1 192.168.20.10"
-  - "192.168.99.1 192.168.99.20"
+  - "192.168.99.1 192.168.99.10"
 dhcp_pools:
   - { name: POOL_VLAN10, network: "192.168.10.0 255.255.255.0", router: "192.168.10.1", dns: "8.8.8.8" }
   - { name: POOL_VLAN20, network: "192.168.20.0 255.255.255.0", router: "192.168.20.1", dns: "8.8.8.8" }

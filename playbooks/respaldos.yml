@@ -1,0 +1,48 @@
+---
+- name: Respaldar switches
+  hosts: switches
+  gather_facts: false
+  connection: ansible.netcommon.network_cli
+  tasks:
+    - name: Crear carpeta de respaldos
+      ansible.builtin.file:
+        path: "{{ playbook_dir }}/../respaldos"
+        state: directory
+      delegate_to: localhost
+      run_once: true
+
+    - name: Obtener running-config y VLANs
+      cisco.ios.ios_command:
+        commands:
+          - show running-config
+          - show vlan brief
+      register: evidencia
+
+    - name: Guardar running-config
+      ansible.builtin.copy:
+        content: "{{ evidencia.stdout[0] }}"
+        dest: "{{ playbook_dir }}/../respaldos/{{ inventory_hostname }}-running-config.txt"
+      delegate_to: localhost
+
+    - name: Guardar show vlan brief
+      ansible.builtin.copy:
+        content: "{{ evidencia.stdout[1] }}"
+        dest: "{{ playbook_dir }}/../respaldos/{{ inventory_hostname }}-show-vlan-brief.txt"
+      delegate_to: localhost
+
+- name: Respaldar router
+  hosts: routers
+  gather_facts: false
+  connection: ansible.netcommon.network_cli
+  tasks:
+    - name: Obtener running-config del router
+      cisco.ios.ios_command:
+        commands:
+          - show running-config
+      register: evidencia_r
+
+    - name: Guardar running-config del router
+      ansible.builtin.copy:
+        content: "{{ evidencia_r.stdout[0] }}"
+        dest: "{{ playbook_dir }}/../respaldos/{{ inventory_hostname }}-running-config.txt"
+      delegate_to: localhost

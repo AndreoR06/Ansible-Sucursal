@@ -1,8 +1,9 @@
 ---
 ansible_user: admin
-# Sin contraseñas en plano (Fase 2/Regla 4). Usar vault o entorno:
-#   ansible_password: "{{ vault_ansible_password }}"
-#   ansible_become_password: "{{ vault_enable_password }}"
+# Credenciales fuera del repo (Fase 2/Regla 4). Crear inventario/group_vars/vault.yml
+# a partir de credenciales.ejemplo.yml (ese archivo SI esta ignorado por git):
+ansible_password: "{{ vault_ansible_password }}"
+ansible_become_password: "{{ vault_enable_password }}"
 ansible_connection: ansible.netcommon.network_cli
 ansible_network_os: cisco.ios.ios
 ansible_become: true

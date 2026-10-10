@@ -1,5 +1,5 @@
-! Evidencia de ejemplo - running-config Router_MB (sin secretos)
-hostname Router_MB
+! Evidencia de ejemplo - running-config R-SUC-01 (sin secretos)
+hostname R-SUC-01
 !
 interface GigabitEthernet0/1
  no shutdown
@@ -21,7 +21,7 @@ interface GigabitEthernet0/1.99
 !
 ip dhcp excluded-address 192.168.10.1 192.168.10.10
 ip dhcp excluded-address 192.168.20.1 192.168.20.10
-ip dhcp excluded-address 192.168.99.1 192.168.99.20
+ip dhcp excluded-address 192.168.99.1 192.168.99.10
 !
 ip dhcp pool POOL_VLAN10
  network 192.168.10.0 255.255.255.0
@@ -40,10 +40,5 @@ ip dhcp pool POOL_VLAN99
  default-router 192.168.99.1
  dns-server 8.8.8.8
  lease 7
-!
-line con 0
- logging synchronous
-line vty 0 4
- transport input ssh
 !
 end

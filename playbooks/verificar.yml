@@ -1,5 +1,5 @@
 ---
-- name: Verificar VLANs y trunks
+- name: Verificar VLANs, trunks y conectividad
   hosts: switches
   gather_facts: false
   connection: ansible.netcommon.network_cli
@@ -10,6 +10,19 @@
           - show vlan brief
           - show interfaces trunk
       register: salida
+
     - name: Mostrar resultado
       ansible.builtin.debug:
         msg: "{{ salida.stdout_lines }}"
+
+    - name: Ping a gateways y gestion
+      cisco.ios.ios_command:
+        commands:
+          - ping 192.168.99.1
+          - ping 192.168.10.1
+          - ping 192.168.20.1
+      register: ping_check
+
+    - name: Mostrar pings
+      ansible.builtin.debug:
+        var: ping_check.stdout_lines
