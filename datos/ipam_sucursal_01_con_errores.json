@@ -1,4 +1,4 @@
-{
+
   "fuente": "IPAM simulado",
   "sitio": "Sucursal 01",
   "_advertencia_prueba": "DATOS DE PRUEBA: copia de ipam_sucursal_01.json con 4 errores deliberados SOLO para demostrar la deteccion en python/validar_inventario.py. NO usar como fuente real. (a) gateway VLAN 20 cambiado a 192.168.20.254, (b) ip_gestion de SW-SUC-01-ACC1 cambiada a 192.168.99.99/24, (c) SW-SUC-01-ACC3 ausente del IPAM, (d) dispositivo extra SW-SUC-01-ACC9 que no existe en el inventario.",

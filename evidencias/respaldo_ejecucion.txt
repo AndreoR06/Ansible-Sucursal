@@ -1,0 +1,34 @@
+
+PLAY [Respaldar switches] ******************************************************
+
+TASK [Crear carpeta de respaldos] **********************************************
+ok: [SW-SUC-01-CORE -> localhost]
+
+TASK [Obtener running-config y VLANs] ******************************************
+[ERROR]: Task failed: Action failed: timed out
+Origin: /home/ppp/automatizacion_red/playbooks/respaldos.yml:14:7
+
+12       run_once: true
+13
+14     - name: Obtener running-config y VLANs
+         ^ column 7
+
+fatal: [SW-SUC-01-ACC3]: FAILED! => 
+    changed: false
+    msg: timed out
+fatal: [SW-SUC-01-ACC1]: FAILED! => 
+    changed: false
+    msg: timed out
+fatal: [SW-SUC-01-CORE]: FAILED! => 
+    changed: false
+    msg: timed out
+fatal: [SW-SUC-01-ACC2]: FAILED! => 
+    changed: false
+    msg: timed out
+
+PLAY RECAP *********************************************************************
+SW-SUC-01-ACC1             : ok=0    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+SW-SUC-01-ACC2             : ok=0    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+SW-SUC-01-ACC3             : ok=0    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+SW-SUC-01-CORE             : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+

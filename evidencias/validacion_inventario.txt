@@ -1,11 +1,11 @@
 VALIDACION DE INVENTARIO CONTRA IPAM (Python, solo lectura)
 ====================================================================================================
 QUÉ FUENTES LEYÓ
-  - IPAM: C:\Users\Andrew_06\Documents\Ansible-Sucursal\datos\ipam_sucursal_01.json (3 VLANs, 5 dispositivos)
-  - Diseño: C:\Users\Andrew_06\Documents\Ansible-Sucursal\variables\sucursal_01.yml (3 VLANs; red/gateway derivados de la subinterfaz del router)
-  - group_vars: C:\Users\Andrew_06\Documents\Ansible-Sucursal\inventario\group_vars\switches.yml (3 VLANs), C:\Users\Andrew_06\Documents\Ansible-Sucursal\inventario\group_vars\routers.yml (3 pools DHCP)
-  - Inventario: C:\Users\Andrew_06\Documents\Ansible-Sucursal\inventario\hosts.yml (5 equipos con ansible_host)
-  - Evidencia: C:\Users\Andrew_06\Documents\Ansible-Sucursal\respaldos (5 archivos leídos: running-config + ip brief)
+  - IPAM: /home/ppp/automatizacion_red/datos/ipam_sucursal_01.json (3 VLANs, 5 dispositivos)
+  - Diseño: /home/ppp/automatizacion_red/variables/sucursal_01.yml (3 VLANs; red/gateway derivados de la subinterfaz del router)
+  - group_vars: /home/ppp/automatizacion_red/inventario/group_vars/switches.yml (3 VLANs), /home/ppp/automatizacion_red/inventario/group_vars/routers.yml (3 pools DHCP)
+  - Inventario: /home/ppp/automatizacion_red/inventario/hosts.yml (5 equipos con ansible_host)
+  - Evidencia: /home/ppp/automatizacion_red/respaldos (5 archivos leídos: running-config + ip brief)
 
 QUÉ CONDICIÓN EVALUÓ
   1. VLAN id/nombre (IPAM vs YAML vs group_vars).
@@ -13,7 +13,7 @@ QUÉ CONDICIÓN EVALUÓ
   3. IP de gestión por equipo (IPAM vs YAML vs ansible_host vs evidencia).
   4. Nombre/función (IPAM vs inventario vs hostname del respaldo). IP con ipaddress.
 
-COINCIDENCIAS (15)
+COINCIDENCIAS (10)
 ----------------------------------------------------------------------------------------------------
   - VLAN 10 (USUARIOS_VLAN10): nombre igual en IPAM, YAML y group_vars.
   - VLAN 20 (USUARIOS_VLAN20): nombre igual en IPAM, YAML y group_vars.
@@ -25,23 +25,22 @@ COINCIDENCIAS (15)
   - Red VLAN 99: 192.168.99.0/24 igual en IPAM, YAML, group_vars y evidencia.
   - Gateway VLAN 99: 192.168.99.1 igual en IPAM, YAML, group_vars y evidencia.
   - Dirección de gestión R-SUC-01: 192.168.99.1 igual en IPAM, YAML, inventario y evidencia.
-  - Equipo R-SUC-01 (Router inter-VLAN): en IPAM, inventario y respaldo.
-  - Equipo SW-SUC-01-ACC1 (Switch acceso 1): en IPAM, inventario y respaldo.
-  - Equipo SW-SUC-01-ACC2 (Switch acceso 2): en IPAM, inventario y respaldo.
-  - Equipo SW-SUC-01-ACC3 (Switch acceso 3): en IPAM, inventario y respaldo.
-  - Equipo SW-SUC-01-CORE (Switch core): en IPAM, inventario y respaldo.
 
 FALTANTES (4)
 ----------------------------------------------------------------------------------------------------
-  - Dirección de gestión SW-SUC-01-ACC1: falta en evidencia-running, evidencia-brief; está en IPAM 192.168.99.15, YAML 192.168.99.15, inventario 192.168.99.15.
-  - Dirección de gestión SW-SUC-01-ACC2: falta en evidencia-running, evidencia-brief; está en IPAM 192.168.99.16, YAML 192.168.99.16, inventario 192.168.99.16.
-  - Dirección de gestión SW-SUC-01-ACC3: falta en evidencia-running, evidencia-brief; está en IPAM 192.168.99.17, YAML 192.168.99.17, inventario 192.168.99.17.
-  - Dirección de gestión SW-SUC-01-CORE: falta en evidencia-running, evidencia-brief; está en IPAM 192.168.99.14, YAML 192.168.99.14, inventario 192.168.99.14.
+  - Dirección de gestión SW-SUC-01-ACC1: falta en evidencia-brief; está en IPAM 192.168.99.15, YAML 192.168.99.15, inventario 192.168.99.15, evidencia-running 192.168.99.15.
+  - Dirección de gestión SW-SUC-01-ACC2: falta en evidencia-brief; está en IPAM 192.168.99.16, YAML 192.168.99.16, inventario 192.168.99.16, evidencia-running 192.168.99.16.
+  - Dirección de gestión SW-SUC-01-ACC3: falta en evidencia-brief; está en IPAM 192.168.99.17, YAML 192.168.99.17, inventario 192.168.99.17, evidencia-running 192.168.99.17.
+  - Dirección de gestión SW-SUC-01-CORE: falta en evidencia-brief; está en IPAM 192.168.99.14, YAML 192.168.99.14, inventario 192.168.99.14, evidencia-running 192.168.99.14.
 
-DIFERENCIAS (0)
+DIFERENCIAS (5)
 ----------------------------------------------------------------------------------------------------
-  (ninguna)
+  - Hostname R-SUC-01: inventario 'R-SUC-01', respaldo 'Router-MB'.
+  - Hostname SW-SUC-01-ACC1: inventario 'SW-SUC-01-ACC1', respaldo 'SW2'.
+  - Hostname SW-SUC-01-ACC2: inventario 'SW-SUC-01-ACC2', respaldo 'SW3'.
+  - Hostname SW-SUC-01-ACC3: inventario 'SW-SUC-01-ACC3', respaldo 'SW4'.
+  - Hostname SW-SUC-01-CORE: inventario 'SW-SUC-01-CORE', respaldo 'SW1'.
 
 RESUMEN
-  Coincidencias: 15, faltantes: 4, diferencias: 0
+  Coincidencias: 10, faltantes: 4, diferencias: 5
   Resultado global: NO CUMPLE

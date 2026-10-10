@@ -1,4 +1,4 @@
-import os
+mport os
 
 # Datos base (coherentes con variables/sucursal_01.yml)
 # Formato acceso: (interfaz, vlan, descripcion)

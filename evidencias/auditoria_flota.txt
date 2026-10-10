@@ -1,0 +1,87 @@
+AUDITORIA DE FLOTA (Python, solo lectura)
+====================================================================================================
+[1] QUÉ DATOS LEYÓ
+  - Diseño: /home/ppp/automatizacion_red/variables/sucursal_01.yml (4 switches, 1 routers)
+  - Evidencia: /home/ppp/automatizacion_red/respaldos (5 de 14 archivos para 3 equipos)
+  - Equipos: R-SUC-01, SW-SUC-01-CORE, SW-SUC-01-ACC1
+
+[2] QUÉ CONDICIÓN EVALUÓ
+  - Todos: show version (archivo, versión IOS, hostname).
+  - Switches: VLANs, accesos (running), troncales (running y brief),
+    gestión Vlan99 (ip brief) y gateway (running).
+  - Router: subinterfaces (running), brief (física y subifs up/up),
+    rutas conectadas 10/20/99 (ip route).
+  Regla: archivo faltante o ilegible = NO CUMPLE explícito.
+
+[3] CUÁL FUE EL RESULTADO
+--- EQUIPO: R-SUC-01 (3 CUMPLE, 9 NO CUMPLE) ---
+  [DIF] show version existe y versión IOS identificada | NO CUMPLE | R-SUC-01-show-version.txt
+       detalle: esperado archivo existe con Version, encontrado archivo faltante o ilegible
+  [DIF] hostname coincide con inventario | NO CUMPLE | R-SUC-01-show-version.txt
+       detalle: esperado R-SUC-01, encontrado sin evidencia (archivo faltante)
+  [OK ] subinterfaz GigabitEthernet0/1.10 encapsulación/IP | CUMPLE | R-SUC-01-running-config.txt
+  [OK ] subinterfaz GigabitEthernet0/1.20 encapsulación/IP | CUMPLE | R-SUC-01-running-config.txt
+  [OK ] subinterfaz GigabitEthernet0/1.99 encapsulación/IP | CUMPLE | R-SUC-01-running-config.txt
+  [DIF] interfaz GigabitEthernet0/1 IP y estado up/up (ip brief) | NO CUMPLE | R-SUC-01-show-ip-interface-brief.txt
+       detalle: esperado cualquiera up/up, encontrado sin evidencia (archivo faltante)
+  [DIF] interfaz GigabitEthernet0/1.10 IP y estado up/up (ip brief) | NO CUMPLE | R-SUC-01-show-ip-interface-brief.txt
+       detalle: esperado 192.168.10.1 up/up, encontrado sin evidencia (archivo faltante)
+  [DIF] interfaz GigabitEthernet0/1.20 IP y estado up/up (ip brief) | NO CUMPLE | R-SUC-01-show-ip-interface-brief.txt
+       detalle: esperado 192.168.20.1 up/up, encontrado sin evidencia (archivo faltante)
+  [DIF] interfaz GigabitEthernet0/1.99 IP y estado up/up (ip brief) | NO CUMPLE | R-SUC-01-show-ip-interface-brief.txt
+       detalle: esperado 192.168.99.1 up/up, encontrado sin evidencia (archivo faltante)
+  [DIF] ruta conectada 192.168.10.0/24 | NO CUMPLE | R-SUC-01-show-ip-route.txt
+       detalle: esperado 192.168.10.0/24, encontrado sin evidencia (archivo faltante)
+  [DIF] ruta conectada 192.168.20.0/24 | NO CUMPLE | R-SUC-01-show-ip-route.txt
+       detalle: esperado 192.168.20.0/24, encontrado sin evidencia (archivo faltante)
+  [DIF] ruta conectada 192.168.99.0/24 | NO CUMPLE | R-SUC-01-show-ip-route.txt
+       detalle: esperado 192.168.99.0/24, encontrado sin evidencia (archivo faltante)
+
+--- EQUIPO: SW-SUC-01-CORE (11 CUMPLE, 5 NO CUMPLE) ---
+  [DIF] show version existe y versión IOS identificada | NO CUMPLE | SW-SUC-01-CORE-show-version.txt
+       detalle: esperado archivo existe con Version, encontrado archivo faltante o ilegible
+  [DIF] hostname coincide con inventario | NO CUMPLE | SW-SUC-01-CORE-show-version.txt
+       detalle: esperado SW-SUC-01-CORE, encontrado sin evidencia (archivo faltante)
+  [OK ] VLAN 10 existencia/nombre/estado | CUMPLE | SW-SUC-01-CORE-show-vlan-brief.txt
+  [OK ] VLAN 20 existencia/nombre/estado | CUMPLE | SW-SUC-01-CORE-show-vlan-brief.txt
+  [OK ] VLAN 99 existencia/nombre/estado | CUMPLE | SW-SUC-01-CORE-show-vlan-brief.txt
+  [OK ] puerto acceso GigabitEthernet0/0 modo/VLAN/descripción | CUMPLE | SW-SUC-01-CORE-running-config.txt
+  [OK ] puerto acceso GigabitEthernet0/1 modo/VLAN/descripción | CUMPLE | SW-SUC-01-CORE-running-config.txt
+  [OK ] puerto acceso GigabitEthernet0/2 modo/VLAN/descripción | CUMPLE | SW-SUC-01-CORE-running-config.txt
+  [OK ] puerto acceso GigabitEthernet0/3 modo/VLAN/descripción | CUMPLE | SW-SUC-01-CORE-running-config.txt
+  [OK ] puerto acceso GigabitEthernet1/0 modo/VLAN/descripción | CUMPLE | SW-SUC-01-CORE-running-config.txt
+  [OK ] troncal GigabitEthernet1/1 modo/nativa/permitidas/descripción (running) | CUMPLE | SW-SUC-01-CORE-running-config.txt
+  [OK ] troncal GigabitEthernet1/2 modo/nativa/permitidas/descripción (running) | CUMPLE | SW-SUC-01-CORE-running-config.txt
+  [DIF] troncal GigabitEthernet1/1 trunking/nativa/permitidas (interfaces trunk) | NO CUMPLE | SW-SUC-01-CORE-show-interfaces-trunk.txt
+       detalle: esperado trunking nativa=99 permitidas=10,20,99, encontrado sin evidencia (archivo faltante)
+  [DIF] troncal GigabitEthernet1/2 trunking/nativa/permitidas (interfaces trunk) | NO CUMPLE | SW-SUC-01-CORE-show-interfaces-trunk.txt
+       detalle: esperado trunking nativa=99 permitidas=10,20,99, encontrado sin evidencia (archivo faltante)
+  [DIF] gestión Vlan99 IP y estado up/up | NO CUMPLE | SW-SUC-01-CORE-show-ip-interface-brief.txt
+       detalle: esperado Vlan99 192.168.99.14 up/up, encontrado sin evidencia (archivo faltante)
+  [OK ] gateway ip default-gateway 192.168.99.1 | CUMPLE | SW-SUC-01-CORE-running-config.txt
+
+--- EQUIPO: SW-SUC-01-ACC1 (9 CUMPLE, 5 NO CUMPLE) ---
+  [DIF] show version existe y versión IOS identificada | NO CUMPLE | SW-SUC-01-ACC1-show-version.txt
+       detalle: esperado archivo existe con Version, encontrado archivo faltante o ilegible
+  [DIF] hostname coincide con inventario | NO CUMPLE | SW-SUC-01-ACC1-show-version.txt
+       detalle: esperado SW-SUC-01-ACC1, encontrado sin evidencia (archivo faltante)
+  [OK ] VLAN 10 existencia/nombre/estado | CUMPLE | SW-SUC-01-ACC1-show-vlan-brief.txt
+  [OK ] VLAN 20 existencia/nombre/estado | CUMPLE | SW-SUC-01-ACC1-show-vlan-brief.txt
+  [OK ] VLAN 99 existencia/nombre/estado | CUMPLE | SW-SUC-01-ACC1-show-vlan-brief.txt
+  [OK ] puerto acceso GigabitEthernet0/1 modo/VLAN/descripción | CUMPLE | SW-SUC-01-ACC1-running-config.txt
+  [OK ] puerto acceso GigabitEthernet0/2 modo/VLAN/descripción | CUMPLE | SW-SUC-01-ACC1-running-config.txt
+  [OK ] puerto acceso GigabitEthernet0/3 modo/VLAN/descripción | CUMPLE | SW-SUC-01-ACC1-running-config.txt
+  [OK ] troncal GigabitEthernet0/0 modo/nativa/permitidas/descripción (running) | CUMPLE | SW-SUC-01-ACC1-running-config.txt
+  [OK ] troncal GigabitEthernet1/0 modo/nativa/permitidas/descripción (running) | CUMPLE | SW-SUC-01-ACC1-running-config.txt
+  [DIF] troncal GigabitEthernet0/0 trunking/nativa/permitidas (interfaces trunk) | NO CUMPLE | SW-SUC-01-ACC1-show-interfaces-trunk.txt
+       detalle: esperado trunking nativa=99 permitidas=10,20,99, encontrado sin evidencia (archivo faltante)
+  [DIF] troncal GigabitEthernet1/0 trunking/nativa/permitidas (interfaces trunk) | NO CUMPLE | SW-SUC-01-ACC1-show-interfaces-trunk.txt
+       detalle: esperado trunking nativa=99 permitidas=10,20,99, encontrado sin evidencia (archivo faltante)
+  [DIF] gestión Vlan99 IP y estado up/up | NO CUMPLE | SW-SUC-01-ACC1-show-ip-interface-brief.txt
+       detalle: esperado Vlan99 192.168.99.15 up/up, encontrado sin evidencia (archivo faltante)
+  [OK ] gateway ip default-gateway 192.168.99.1 | CUMPLE | SW-SUC-01-ACC1-running-config.txt
+
+RESUMEN
+  Total: 23 CUMPLE, 19 NO CUMPLE en 42 condiciones
+  Equipos con fallos: R-SUC-01, SW-SUC-01-ACC1, SW-SUC-01-CORE
+  CUMPLIMIENTO GLOBAL: NO CUMPLE
