@@ -1,0 +1,30 @@
+---
+# Cambio controlado: actualiza solo la descripcion del puerto aprobado.
+# Uso:
+#   ansible-playbook playbooks/cambio_controlado.yml
+# Es idempotente: la segunda ejecucion debe dar changed=0.
+- name: Aplicar cambio controlado de descripcion
+  hosts: switches
+  gather_facts: false
+  connection: ansible.netcommon.network_cli
+  vars_files:
+    - "{{ playbook_dir }}/../datos/cambio_aprobado.yml"
+  tasks:
+    - name: Validar datos del cambio aprobado
+      ansible.builtin.assert:
+        that:
+          - cambio is defined
+          - cambio.equipo is defined
+          - cambio.interfaz is defined
+          - cambio.descripcion_nueva is defined
+        fail_msg: "datos/cambio_aprobado.yml incompleto: se requiere cambio.equipo, cambio.interfaz y cambio.descripcion_nueva."
+      delegate_to: localhost
+      run_once: true
+
+    - name: Actualizar descripcion del puerto aprobado
+      cisco.ios.ios_config:
+        lines:
+          - description {{ cambio.descripcion_nueva }}
+        parents: interface {{ cambio.interfaz }}
+        save_when: modified
+      when: inventory_hostname == cambio.equipo

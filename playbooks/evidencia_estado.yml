@@ -1,0 +1,101 @@
+---
+# Evidencia de estado ANTES / DESPUES de un cambio (solo lectura, no configura).
+# Uso:
+#   ansible-playbook playbooks/evidencia_estado.yml -e fase=antes
+#   ansible-playbook playbooks/evidencia_estado.yml -e fase=despues
+# Guarda en evidencias/<fase>/<HOST>-<archivo>.txt con los mismos nombres
+# que usa respaldos/.
+
+- name: Validar fase solicitada
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Validar que fase sea antes o despues
+      ansible.builtin.assert:
+        that:
+          - fase is defined
+          - fase in ['antes', 'despues']
+        fail_msg: "Debes pasar -e fase=antes o -e fase=despues (recibido: '{{ fase | default('(sin definir)') }}')."
+
+- name: Obtener evidencia de switches
+  hosts: switches
+  gather_facts: false
+  connection: ansible.netcommon.network_cli
+  tasks:
+    - name: Crear carpeta de evidencia de la fase
+      ansible.builtin.file:
+        path: "{{ playbook_dir }}/../evidencias/{{ fase }}"
+        state: directory
+      delegate_to: localhost
+      run_once: true
+
+    - name: Obtener estado del switch
+      cisco.ios.ios_command:
+        commands:
+          - show running-config
+          - show vlan brief
+          - show interfaces trunk
+          - show ip interface brief
+      register: evidencia
+
+    - name: Guardar running-config
+      ansible.builtin.copy:
+        content: "{{ evidencia.stdout[0] }}"
+        dest: "{{ playbook_dir }}/../evidencias/{{ fase }}/{{ inventory_hostname }}-running-config.txt"
+      delegate_to: localhost
+
+    - name: Guardar show vlan brief
+      ansible.builtin.copy:
+        content: "{{ evidencia.stdout[1] }}"
+        dest: "{{ playbook_dir }}/../evidencias/{{ fase }}/{{ inventory_hostname }}-show-vlan-brief.txt"
+      delegate_to: localhost
+
+    - name: Guardar show interfaces trunk
+      ansible.builtin.copy:
+        content: "{{ evidencia.stdout[2] }}"
+        dest: "{{ playbook_dir }}/../evidencias/{{ fase }}/{{ inventory_hostname }}-show-interfaces-trunk.txt"
+      delegate_to: localhost
+
+    - name: Guardar show ip interface brief
+      ansible.builtin.copy:
+        content: "{{ evidencia.stdout[3] }}"
+        dest: "{{ playbook_dir }}/../evidencias/{{ fase }}/{{ inventory_hostname }}-show-ip-interface-brief.txt"
+      delegate_to: localhost
+
+- name: Obtener evidencia del router
+  hosts: routers
+  gather_facts: false
+  connection: ansible.netcommon.network_cli
+  tasks:
+    - name: Crear carpeta de evidencia de la fase
+      ansible.builtin.file:
+        path: "{{ playbook_dir }}/../evidencias/{{ fase }}"
+        state: directory
+      delegate_to: localhost
+      run_once: true
+
+    - name: Obtener estado del router
+      cisco.ios.ios_command:
+        commands:
+          - show running-config
+          - show ip interface brief
+          - show ip route
+      register: evidencia_r
+
+    - name: Guardar running-config del router
+      ansible.builtin.copy:
+        content: "{{ evidencia_r.stdout[0] }}"
+        dest: "{{ playbook_dir }}/../evidencias/{{ fase }}/{{ inventory_hostname }}-running-config.txt"
+      delegate_to: localhost
+
+    - name: Guardar show ip interface brief del router
+      ansible.builtin.copy:
+        content: "{{ evidencia_r.stdout[1] }}"
+        dest: "{{ playbook_dir }}/../evidencias/{{ fase }}/{{ inventory_hostname }}-show-ip-interface-brief.txt"
+      delegate_to: localhost
+
+    - name: Guardar show ip route del router
+      ansible.builtin.copy:
+        content: "{{ evidencia_r.stdout[2] }}"
+        dest: "{{ playbook_dir }}/../evidencias/{{ fase }}/{{ inventory_hostname }}-show-ip-route.txt"
+      delegate_to: localhost

@@ -1,4 +1,9 @@
 ---
+# Respaldo de evidencia para la auditoria de flota (solo lectura, no configura).
+# Uso:
+#   ansible-playbook playbooks/respaldos.yml
+# Guarda en respaldos/<HOST>-<archivo>.txt. Se conservan los nombres
+# existentes de running-config y show-vlan-brief.
 - name: Respaldar switches
   hosts: switches
   gather_facts: false
@@ -11,11 +16,14 @@
       delegate_to: localhost
       run_once: true
 
-    - name: Obtener running-config y VLANs
+    - name: Obtener evidencia del switch
       cisco.ios.ios_command:
         commands:
           - show running-config
+          - show version
           - show vlan brief
+          - show interfaces trunk
+          - show ip interface brief
       register: evidencia
 
     - name: Guardar running-config
@@ -24,10 +32,28 @@
         dest: "{{ playbook_dir }}/../respaldos/{{ inventory_hostname }}-running-config.txt"
       delegate_to: localhost
 
-    - name: Guardar show vlan brief
+    - name: Guardar show version
       ansible.builtin.copy:
         content: "{{ evidencia.stdout[1] }}"
+        dest: "{{ playbook_dir }}/../respaldos/{{ inventory_hostname }}-show-version.txt"
+      delegate_to: localhost
+
+    - name: Guardar show vlan brief
+      ansible.builtin.copy:
+        content: "{{ evidencia.stdout[2] }}"
         dest: "{{ playbook_dir }}/../respaldos/{{ inventory_hostname }}-show-vlan-brief.txt"
+      delegate_to: localhost
+
+    - name: Guardar show interfaces trunk
+      ansible.builtin.copy:
+        content: "{{ evidencia.stdout[3] }}"
+        dest: "{{ playbook_dir }}/../respaldos/{{ inventory_hostname }}-show-interfaces-trunk.txt"
+      delegate_to: localhost
+
+    - name: Guardar show ip interface brief
+      ansible.builtin.copy:
+        content: "{{ evidencia.stdout[4] }}"
+        dest: "{{ playbook_dir }}/../respaldos/{{ inventory_hostname }}-show-ip-interface-brief.txt"
       delegate_to: localhost
 
 - name: Respaldar router
@@ -35,14 +61,35 @@
   gather_facts: false
   connection: ansible.netcommon.network_cli
   tasks:
-    - name: Obtener running-config del router
+    - name: Obtener evidencia del router
       cisco.ios.ios_command:
         commands:
           - show running-config
+          - show version
+          - show ip interface brief
+          - show ip route
       register: evidencia_r
 
     - name: Guardar running-config del router
       ansible.builtin.copy:
         content: "{{ evidencia_r.stdout[0] }}"
         dest: "{{ playbook_dir }}/../respaldos/{{ inventory_hostname }}-running-config.txt"
+      delegate_to: localhost
+
+    - name: Guardar show version del router
+      ansible.builtin.copy:
+        content: "{{ evidencia_r.stdout[1] }}"
+        dest: "{{ playbook_dir }}/../respaldos/{{ inventory_hostname }}-show-version.txt"
+      delegate_to: localhost
+
+    - name: Guardar show ip interface brief del router
+      ansible.builtin.copy:
+        content: "{{ evidencia_r.stdout[2] }}"
+        dest: "{{ playbook_dir }}/../respaldos/{{ inventory_hostname }}-show-ip-interface-brief.txt"
+      delegate_to: localhost
+
+    - name: Guardar show ip route del router
+      ansible.builtin.copy:
+        content: "{{ evidencia_r.stdout[3] }}"
+        dest: "{{ playbook_dir }}/../respaldos/{{ inventory_hostname }}-show-ip-route.txt"
       delegate_to: localhost

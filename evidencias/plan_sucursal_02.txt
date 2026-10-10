@@ -1,0 +1,25 @@
+PLAN DE DIRECCIONAMIENTO - SUCURSAL 02 (Python, solo calculo)
+====================================================================================================
+[1] QUE DATOS LEYO
+  - Entrada: C:\Users\Andrew_06\Documents\Ansible-Sucursal\datos\sucursal_02_entrada.yml (sucursal sucursal_02, bloque 10.20.0.0/23, 3 VLANs)
+    VLAN 10 ADMINISTRACION: 50 dispositivos (necesita 51 direcciones con gateway)
+    VLAN 20 OPERACION: 25 dispositivos (necesita 26 direcciones con gateway)
+    VLAN 99 GESTION: 10 dispositivos (necesita 11 direcciones con gateway)
+
+[2] QUE CONDICION EVALUO
+  - Prefijo mas largo con 2^(32-p)-2 >= dispositivos+1.
+  - VLSM secuencial y alineado, de mayor a menor tamano.
+  - Todo dentro del bloque y sin solapes (verificado con codigo).
+  - Gateway = primera IP utilizable de cada subred.
+
+[3] CUAL FUE EL RESULTADO
+------------------------------------------------------------------------------------------------------------
+| VLAN   | NOMBRE          | RED                | MASCARA         | GATEWAY       | PREV  | UTIL  | %USO   |
+------------------------------------------------------------------------------------------------------------
+| 10     | ADMINISTRACION  | 10.20.0.0/26       | 255.255.255.192 | 10.20.0.1     | 50    | 62    |  80.6% |
+| 20     | OPERACION       | 10.20.0.64/27      | 255.255.255.224 | 10.20.0.65    | 25    | 30    |  83.3% |
+| 99     | GESTION         | 10.20.0.96/28      | 255.255.255.240 | 10.20.0.97    | 10    | 14    |  71.4% |
+------------------------------------------------------------------------------------------------------------
+Espacio libre restante:
+  - de 10.20.0.112 a 10.20.1.255 (400 direcciones)
+CUMPLIMIENTO GLOBAL: CUMPLE (subredes dentro del bloque y sin solapes)

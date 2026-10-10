@@ -1,0 +1,8 @@
+---
+# Entrada para generar la Sucursal 02 (Prototipo 2, solo calculo, no configura).
+sucursal: sucursal_02
+bloque: 10.20.0.0/23
+vlans:
+  - { vlan_id: 10, nombre: ADMINISTRACION, dispositivos: 50 }
+  - { vlan_id: 20, nombre: OPERACION, dispositivos: 25 }
+  - { vlan_id: 99, nombre: GESTION, dispositivos: 10 }

@@ -1,0 +1,31 @@
+sucursal: sucursal_02
+bloque: 10.20.0.0/23
+generado_por: python/generar_sucursal_02.py
+vlans_sucursal_02:
+- vlan_id: 10
+  name: ADMINISTRACION
+  state: active
+  red: 10.20.0.0/26
+  mascara: 255.255.255.192
+  prefijo: 26
+  gateway: 10.20.0.1
+  hosts_previstos: 50
+  hosts_utilizables: 62
+- vlan_id: 20
+  name: OPERACION
+  state: active
+  red: 10.20.0.64/27
+  mascara: 255.255.255.224
+  prefijo: 27
+  gateway: 10.20.0.65
+  hosts_previstos: 25
+  hosts_utilizables: 30
+- vlan_id: 99
+  name: GESTION
+  state: active
+  red: 10.20.0.96/28
+  mascara: 255.255.255.240
+  prefijo: 28
+  gateway: 10.20.0.97
+  hosts_previstos: 10
+  hosts_utilizables: 14
