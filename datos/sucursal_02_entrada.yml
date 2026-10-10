@@ -1,8 +1,7 @@
----
-# Entrada para generar la Sucursal 02 (Prototipo 2, solo calculo, no configura).
+# Entrada para python/generar_sucursal_02.py (VLSM dentro del bloque).
 sucursal: sucursal_02
-bloque: 10.20.0.0/23
+bloque: 192.168.20.0/24
 vlans:
-  - { vlan_id: 10, nombre: ADMINISTRACION, dispositivos: 50 }
-  - { vlan_id: 20, nombre: OPERACION, dispositivos: 25 }
+  - { vlan_id: 10, nombre: USUARIOS_VLAN10, dispositivos: 50 }
+  - { vlan_id: 20, nombre: USUARIOS_VLAN20, dispositivos: 50 }
   - { vlan_id: 99, nombre: GESTION, dispositivos: 10 }

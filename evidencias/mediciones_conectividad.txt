@@ -1,0 +1,20 @@
+MEDICION DE CONECTIVIDAD DE GESTION (ping del sistema, sin SSH)
+====================================================================================================
+QUÉ DATOS LEYÓ
+  - Inventario: /home/ppp/automatizacion_red/inventario/hosts.yml (3 destinos)
+    R-SUC-01: 192.168.99.1
+    SW-SUC-01-CORE: 192.168.99.14
+    SW-SUC-01-ACC1: 192.168.99.15
+  - Parámetros: 10 paquetes por destino, sistema Linux
+
+QUÉ CONDICIÓN EVALUÓ
+  - 'cumple' si pérdida = 0 % Y promedio <= 50 ms.
+
+CUÁL FUE EL RESULTADO
+  [OK ] R-SUC-01 (192.168.99.1): cumple | enviados=10 recibidos=10 pérdida=0.0 % min=11.67ms prom=14.736ms max=18.437ms | pérdida 0.0 % y promedio 14.736 ms dentro del umbral 50 ms.
+  [OK ] SW-SUC-01-CORE (192.168.99.14): cumple | enviados=10 recibidos=10 pérdida=0.0 % min=17.509ms prom=21.859ms max=27.693ms | pérdida 0.0 % y promedio 21.859 ms dentro del umbral 50 ms.
+  [OK ] SW-SUC-01-ACC1 (192.168.99.15): cumple | enviados=10 recibidos=10 pérdida=0.0 % min=21.032ms prom=27.674ms max=44.284ms | pérdida 0.0 % y promedio 27.674 ms dentro del umbral 50 ms.
+
+RESUMEN
+  Cumplen: 3, no cumplen: 0 de 3 destinos
+  Resultado global: CUMPLE

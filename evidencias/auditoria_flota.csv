@@ -1,0 +1,43 @@
+equipo,condicion_evaluada,resultado,evidencia_usada,detalle_diferencia
+R-SUC-01,show version existe y versión IOS identificada,NO CUMPLE,R-SUC-01-show-version.txt,"esperado archivo existe con Version, encontrado archivo faltante o ilegible"
+R-SUC-01,hostname coincide con inventario,NO CUMPLE,R-SUC-01-show-version.txt,"esperado R-SUC-01, encontrado sin evidencia (archivo faltante)"
+R-SUC-01,subinterfaz GigabitEthernet0/1.10 encapsulación/IP,CUMPLE,R-SUC-01-running-config.txt,
+R-SUC-01,subinterfaz GigabitEthernet0/1.20 encapsulación/IP,CUMPLE,R-SUC-01-running-config.txt,
+R-SUC-01,subinterfaz GigabitEthernet0/1.99 encapsulación/IP,CUMPLE,R-SUC-01-running-config.txt,
+R-SUC-01,interfaz GigabitEthernet0/1 IP y estado up/up (ip brief),NO CUMPLE,R-SUC-01-show-ip-interface-brief.txt,"esperado cualquiera up/up, encontrado sin evidencia (archivo faltante)"
+R-SUC-01,interfaz GigabitEthernet0/1.10 IP y estado up/up (ip brief),NO CUMPLE,R-SUC-01-show-ip-interface-brief.txt,"esperado 192.168.10.1 up/up, encontrado sin evidencia (archivo faltante)"
+R-SUC-01,interfaz GigabitEthernet0/1.20 IP y estado up/up (ip brief),NO CUMPLE,R-SUC-01-show-ip-interface-brief.txt,"esperado 192.168.20.1 up/up, encontrado sin evidencia (archivo faltante)"
+R-SUC-01,interfaz GigabitEthernet0/1.99 IP y estado up/up (ip brief),NO CUMPLE,R-SUC-01-show-ip-interface-brief.txt,"esperado 192.168.99.1 up/up, encontrado sin evidencia (archivo faltante)"
+R-SUC-01,ruta conectada 192.168.10.0/24,NO CUMPLE,R-SUC-01-show-ip-route.txt,"esperado 192.168.10.0/24, encontrado sin evidencia (archivo faltante)"
+R-SUC-01,ruta conectada 192.168.20.0/24,NO CUMPLE,R-SUC-01-show-ip-route.txt,"esperado 192.168.20.0/24, encontrado sin evidencia (archivo faltante)"
+R-SUC-01,ruta conectada 192.168.99.0/24,NO CUMPLE,R-SUC-01-show-ip-route.txt,"esperado 192.168.99.0/24, encontrado sin evidencia (archivo faltante)"
+SW-SUC-01-CORE,show version existe y versión IOS identificada,NO CUMPLE,SW-SUC-01-CORE-show-version.txt,"esperado archivo existe con Version, encontrado archivo faltante o ilegible"
+SW-SUC-01-CORE,hostname coincide con inventario,NO CUMPLE,SW-SUC-01-CORE-show-version.txt,"esperado SW-SUC-01-CORE, encontrado sin evidencia (archivo faltante)"
+SW-SUC-01-CORE,VLAN 10 existencia/nombre/estado,CUMPLE,SW-SUC-01-CORE-show-vlan-brief.txt,
+SW-SUC-01-CORE,VLAN 20 existencia/nombre/estado,CUMPLE,SW-SUC-01-CORE-show-vlan-brief.txt,
+SW-SUC-01-CORE,VLAN 99 existencia/nombre/estado,CUMPLE,SW-SUC-01-CORE-show-vlan-brief.txt,
+SW-SUC-01-CORE,puerto acceso GigabitEthernet0/0 modo/VLAN/descripción,CUMPLE,SW-SUC-01-CORE-running-config.txt,
+SW-SUC-01-CORE,puerto acceso GigabitEthernet0/1 modo/VLAN/descripción,CUMPLE,SW-SUC-01-CORE-running-config.txt,
+SW-SUC-01-CORE,puerto acceso GigabitEthernet0/2 modo/VLAN/descripción,CUMPLE,SW-SUC-01-CORE-running-config.txt,
+SW-SUC-01-CORE,puerto acceso GigabitEthernet0/3 modo/VLAN/descripción,CUMPLE,SW-SUC-01-CORE-running-config.txt,
+SW-SUC-01-CORE,puerto acceso GigabitEthernet1/0 modo/VLAN/descripción,CUMPLE,SW-SUC-01-CORE-running-config.txt,
+SW-SUC-01-CORE,troncal GigabitEthernet1/1 modo/nativa/permitidas/descripción (running),CUMPLE,SW-SUC-01-CORE-running-config.txt,
+SW-SUC-01-CORE,troncal GigabitEthernet1/2 modo/nativa/permitidas/descripción (running),CUMPLE,SW-SUC-01-CORE-running-config.txt,
+SW-SUC-01-CORE,troncal GigabitEthernet1/1 trunking/nativa/permitidas (interfaces trunk),NO CUMPLE,SW-SUC-01-CORE-show-interfaces-trunk.txt,"esperado trunking nativa=99 permitidas=10,20,99, encontrado sin evidencia (archivo faltante)"
+SW-SUC-01-CORE,troncal GigabitEthernet1/2 trunking/nativa/permitidas (interfaces trunk),NO CUMPLE,SW-SUC-01-CORE-show-interfaces-trunk.txt,"esperado trunking nativa=99 permitidas=10,20,99, encontrado sin evidencia (archivo faltante)"
+SW-SUC-01-CORE,gestión Vlan99 IP y estado up/up,NO CUMPLE,SW-SUC-01-CORE-show-ip-interface-brief.txt,"esperado Vlan99 192.168.99.14 up/up, encontrado sin evidencia (archivo faltante)"
+SW-SUC-01-CORE,gateway ip default-gateway 192.168.99.1,CUMPLE,SW-SUC-01-CORE-running-config.txt,
+SW-SUC-01-ACC1,show version existe y versión IOS identificada,NO CUMPLE,SW-SUC-01-ACC1-show-version.txt,"esperado archivo existe con Version, encontrado archivo faltante o ilegible"
+SW-SUC-01-ACC1,hostname coincide con inventario,NO CUMPLE,SW-SUC-01-ACC1-show-version.txt,"esperado SW-SUC-01-ACC1, encontrado sin evidencia (archivo faltante)"
+SW-SUC-01-ACC1,VLAN 10 existencia/nombre/estado,CUMPLE,SW-SUC-01-ACC1-show-vlan-brief.txt,
+SW-SUC-01-ACC1,VLAN 20 existencia/nombre/estado,CUMPLE,SW-SUC-01-ACC1-show-vlan-brief.txt,
+SW-SUC-01-ACC1,VLAN 99 existencia/nombre/estado,CUMPLE,SW-SUC-01-ACC1-show-vlan-brief.txt,
+SW-SUC-01-ACC1,puerto acceso GigabitEthernet0/1 modo/VLAN/descripción,CUMPLE,SW-SUC-01-ACC1-running-config.txt,
+SW-SUC-01-ACC1,puerto acceso GigabitEthernet0/2 modo/VLAN/descripción,CUMPLE,SW-SUC-01-ACC1-running-config.txt,
+SW-SUC-01-ACC1,puerto acceso GigabitEthernet0/3 modo/VLAN/descripción,CUMPLE,SW-SUC-01-ACC1-running-config.txt,
+SW-SUC-01-ACC1,troncal GigabitEthernet0/0 modo/nativa/permitidas/descripción (running),CUMPLE,SW-SUC-01-ACC1-running-config.txt,
+SW-SUC-01-ACC1,troncal GigabitEthernet1/0 modo/nativa/permitidas/descripción (running),CUMPLE,SW-SUC-01-ACC1-running-config.txt,
+SW-SUC-01-ACC1,troncal GigabitEthernet0/0 trunking/nativa/permitidas (interfaces trunk),NO CUMPLE,SW-SUC-01-ACC1-show-interfaces-trunk.txt,"esperado trunking nativa=99 permitidas=10,20,99, encontrado sin evidencia (archivo faltante)"
+SW-SUC-01-ACC1,troncal GigabitEthernet1/0 trunking/nativa/permitidas (interfaces trunk),NO CUMPLE,SW-SUC-01-ACC1-show-interfaces-trunk.txt,"esperado trunking nativa=99 permitidas=10,20,99, encontrado sin evidencia (archivo faltante)"
+SW-SUC-01-ACC1,gestión Vlan99 IP y estado up/up,NO CUMPLE,SW-SUC-01-ACC1-show-ip-interface-brief.txt,"esperado Vlan99 192.168.99.15 up/up, encontrado sin evidencia (archivo faltante)"
+SW-SUC-01-ACC1,gateway ip default-gateway 192.168.99.1,CUMPLE,SW-SUC-01-ACC1-running-config.txt,

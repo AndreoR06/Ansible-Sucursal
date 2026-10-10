@@ -1,17 +1,15 @@
 {
-  "fuente": "IPAM simulado",
-  "sitio": "Sucursal 01",
-  "nota": "Valores coherentes con variables/sucursal_01.yml, inventario/hosts.yml, inventario/group_vars/switches.yml y routers.yml, y respaldos/R-SUC-01-running-config.txt.",
+
   "vlans": [
     {"vlan_id": 10, "nombre": "USUARIOS_VLAN10", "red": "192.168.10.0/24", "gateway": "192.168.10.1"},
     {"vlan_id": 20, "nombre": "USUARIOS_VLAN20", "red": "192.168.20.0/24", "gateway": "192.168.20.1"},
     {"vlan_id": 99, "nombre": "GESTION", "red": "192.168.99.0/24", "gateway": "192.168.99.1"}
   ],
   "dispositivos": [
-    {"hostname": "R-SUC-01", "funcion": "Router inter-VLAN", "ip_gestion": "192.168.99.1/24"},
-    {"hostname": "SW-SUC-01-CORE", "funcion": "Switch core", "ip_gestion": "192.168.99.14/24"},
-    {"hostname": "SW-SUC-01-ACC1", "funcion": "Switch acceso 1", "ip_gestion": "192.168.99.15/24"},
-    {"hostname": "SW-SUC-01-ACC2", "funcion": "Switch acceso 2", "ip_gestion": "192.168.99.16/24"},
-    {"hostname": "SW-SUC-01-ACC3", "funcion": "Switch acceso 3", "ip_gestion": "192.168.99.17/24"}
+    {"hostname": "R-SUC-01", "funcion": "router", "ip_gestion": "192.168.99.1/24"},
+    {"hostname": "SW-SUC-01-CORE", "funcion": "switch-core", "ip_gestion": "192.168.99.14/24"},
+    {"hostname": "SW-SUC-01-ACC1", "funcion": "switch-acceso", "ip_gestion": "192.168.99.15/24"},
+    {"hostname": "SW-SUC-01-ACC2", "funcion": "switch-acceso", "ip_gestion": "192.168.99.16/24"},
+    {"hostname": "SW-SUC-01-ACC3", "funcion": "switch-acceso", "ip_gestion": "192.168.99.17/24"}
   ]
 }

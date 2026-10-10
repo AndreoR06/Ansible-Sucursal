@@ -1,0 +1,4 @@
+fecha,destino,ip,paquetes_enviados,paquetes_recibidos,perdida_pct,latencia_min_ms,latencia_prom_ms,latencia_max_ms,clasificacion,detalle
+2026-10-10T21:09:41.635816+00:00,R-SUC-01,192.168.99.1,10,10,0.0,11.67,14.736,18.437,cumple,pérdida 0.0 % y promedio 14.736 ms dentro del umbral 50 ms.
+2026-10-10T21:09:41.635816+00:00,SW-SUC-01-CORE,192.168.99.14,10,10,0.0,17.509,21.859,27.693,cumple,pérdida 0.0 % y promedio 21.859 ms dentro del umbral 50 ms.
+2026-10-10T21:09:41.635816+00:00,SW-SUC-01-ACC1,192.168.99.15,10,10,0.0,21.032,27.674,44.284,cumple,pérdida 0.0 % y promedio 27.674 ms dentro del umbral 50 ms.

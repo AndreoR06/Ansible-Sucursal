@@ -1,0 +1,232 @@
+VALIDACION DE CAMBIO CONTROLADO (Python, solo lectura)
+====================================================================================================
+[1] QUE DATOS LEYO
+  - Cambio: /home/ppp/automatizacion_red/datos/cambio_aprobado.yml (id CHG-001, SW-SUC-01-ACC1 GigabitEthernet0/3)
+    anterior: 'PC8 - VLAN20' -> nueva: 'PC8 - VLAN20 (CHG-001)'
+  - Diseno: /home/ppp/automatizacion_red/variables/sucursal_01.yml (4 switches, 1 routers)
+  - Evidencia ANTES: /home/ppp/automatizacion_red/evidencias/antes (19 de 19 archivos)
+  - Evidencia DESPUES: /home/ppp/automatizacion_red/evidencias/despues (19 de 19 archivos)
+
+[2] QUE CONDICION EVALUO
+  1. CAMBIO SOLICITADO: descripcion era la anterior en ANTES y es la nueva en DESPUES.
+  2. Elementos criticos sin cambios: VLANs, VLAN 99, gestion, troncales,
+     subinterfaces y rutas del router, demas puertos de acceso.
+  3. OTRA DIFERENCIA: ningun otro atributo de la interfaz del cambio.
+  Regla: archivo de evidencia faltante = diferencia detectada.
+
+[3] CUAL FUE EL RESULTADO
+  [DIF] CAMBIO SOLICITADO | GigabitEthernet0/3 | descripcion
+       antes: PC8 - VLAN20 (CHG-001)
+       despues: PC8 - VLAN20 (CHG-001)
+       estado: diferencia detectada (ANTES no coincide) | en ANTES se esperaba 'PC8 - VLAN20' y se encontro 'PC8 - VLAN20 (CHG-001)'
+  [OK ] CRITICO VLAN | SW-SUC-01-CORE VLAN 10 | existencia/nombre/estado
+       antes: running=(no definida) | brief=USUARIOS_VLAN10/active
+       despues: running=(no definida) | brief=USUARIOS_VLAN10/active
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO VLAN | SW-SUC-01-CORE VLAN 20 | existencia/nombre/estado
+       antes: running=(no definida) | brief=USUARIOS_VLAN20/active
+       despues: running=(no definida) | brief=USUARIOS_VLAN20/active
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO VLAN | SW-SUC-01-CORE VLAN 99 | existencia/nombre/estado
+       antes: running=(no definida) | brief=GESTION/active
+       despues: running=(no definida) | brief=GESTION/active
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO VLAN99 | SW-SUC-01-CORE VLAN 99 | obligatoria presente
+       antes: existe
+       despues: existe
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO GESTION | SW-SUC-01-CORE | IP Vlan99 + gateway
+       antes: running-ip=192.168.99.14/24 gw=192.168.99.1 brief-ip=192.168.99.14
+       despues: running-ip=192.168.99.14/24 gw=192.168.99.1 brief-ip=192.168.99.14
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO TRONCAL | SW-SUC-01-CORE GigabitEthernet1/1 | modo/nativa/permitidas/descripcion
+       antes: modo=trunk nativa=99 permitidas=10,20,99 desc=Hacia R-SUC-01 - Troncal Nativa99
+       despues: modo=trunk nativa=99 permitidas=10,20,99 desc=Hacia R-SUC-01 - Troncal Nativa99
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO TRONCAL | SW-SUC-01-CORE GigabitEthernet1/2 | modo/nativa/permitidas/descripcion
+       antes: modo=trunk nativa=99 permitidas=10,20,99 desc=Hacia SW-SUC-01-ACC1 Gi0/0 - Troncal Nativa99
+       despues: modo=trunk nativa=99 permitidas=10,20,99 desc=Hacia SW-SUC-01-ACC1 Gi0/0 - Troncal Nativa99
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO TRONCAL | SW-SUC-01-CORE (brief) | show interfaces trunk identico
+       antes: 2 troncales
+       despues: 2 troncales
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ACCESO | SW-SUC-01-CORE GigabitEthernet0/0 | vlan/descripcion
+       antes: vlan=10 desc=PC2 - VLAN10 modo=access
+       despues: vlan=10 desc=PC2 - VLAN10 modo=access
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ACCESO | SW-SUC-01-CORE GigabitEthernet0/1 | vlan/descripcion
+       antes: vlan=10 desc=PC3 - VLAN10 modo=access
+       despues: vlan=10 desc=PC3 - VLAN10 modo=access
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ACCESO | SW-SUC-01-CORE GigabitEthernet0/2 | vlan/descripcion
+       antes: vlan=20 desc=PC5 - VLAN20 modo=access
+       despues: vlan=20 desc=PC5 - VLAN20 modo=access
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ACCESO | SW-SUC-01-CORE GigabitEthernet0/3 | vlan/descripcion
+       antes: vlan=20 desc=PC4 - VLAN20 modo=access
+       despues: vlan=20 desc=PC4 - VLAN20 modo=access
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ACCESO | SW-SUC-01-CORE GigabitEthernet1/0 | vlan/descripcion
+       antes: vlan=99 desc=PC6 - VLAN99 modo=access
+       despues: vlan=99 desc=PC6 - VLAN99 modo=access
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO VLAN | SW-SUC-01-ACC1 VLAN 10 | existencia/nombre/estado
+       antes: running=USUARIOS_VLAN10 | brief=USUARIOS_VLAN10/active
+       despues: running=USUARIOS_VLAN10 | brief=USUARIOS_VLAN10/active
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO VLAN | SW-SUC-01-ACC1 VLAN 20 | existencia/nombre/estado
+       antes: running=USUARIOS_VLAN20 | brief=USUARIOS_VLAN20/active
+       despues: running=USUARIOS_VLAN20 | brief=USUARIOS_VLAN20/active
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO VLAN | SW-SUC-01-ACC1 VLAN 99 | existencia/nombre/estado
+       antes: running=GESTION | brief=GESTION/active
+       despues: running=GESTION | brief=GESTION/active
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO VLAN99 | SW-SUC-01-ACC1 VLAN 99 | obligatoria presente
+       antes: existe
+       despues: existe
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO GESTION | SW-SUC-01-ACC1 | IP Vlan99 + gateway
+       antes: running-ip=192.168.99.15/24 gw=192.168.99.1 brief-ip=192.168.99.15
+       despues: running-ip=192.168.99.15/24 gw=192.168.99.1 brief-ip=192.168.99.15
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO TRONCAL | SW-SUC-01-ACC1 GigabitEthernet0/0 | modo/nativa/permitidas/descripcion
+       antes: modo=trunk nativa=99 permitidas=10,20,99 desc=Hacia SW-SUC-01-CORE Gi1/2 - Troncal Nativa99
+       despues: modo=trunk nativa=99 permitidas=10,20,99 desc=Hacia SW-SUC-01-CORE Gi1/2 - Troncal Nativa99
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO TRONCAL | SW-SUC-01-ACC1 GigabitEthernet1/0 | modo/nativa/permitidas/descripcion
+       antes: modo=trunk nativa=99 permitidas=10,20,99 desc=Hacia SW-SUC-01-ACC2 Gi1/1 - Troncal Nativa99
+       despues: modo=trunk nativa=99 permitidas=10,20,99 desc=Hacia SW-SUC-01-ACC2 Gi1/1 - Troncal Nativa99
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO TRONCAL | SW-SUC-01-ACC1 (brief) | show interfaces trunk identico
+       antes: 2 troncales
+       despues: 2 troncales
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ACCESO | SW-SUC-01-ACC1 GigabitEthernet0/1 | vlan/descripcion
+       antes: vlan=10 desc=PC7 - VLAN10 modo=access
+       despues: vlan=10 desc=PC7 - VLAN10 modo=access
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ACCESO | SW-SUC-01-ACC1 GigabitEthernet0/2 | vlan/descripcion
+       antes: vlan=99 desc=Switch1 - VLAN99 modo=access
+       despues: vlan=99 desc=Switch1 - VLAN99 modo=access
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO VLAN | SW-SUC-01-ACC2 VLAN 10 | existencia/nombre/estado
+       antes: running=USUARIOS_VLAN10 | brief=USUARIOS_VLAN10/active
+       despues: running=USUARIOS_VLAN10 | brief=USUARIOS_VLAN10/active
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO VLAN | SW-SUC-01-ACC2 VLAN 20 | existencia/nombre/estado
+       antes: running=USUARIOS_VLAN20 | brief=USUARIOS_VLAN20/active
+       despues: running=USUARIOS_VLAN20 | brief=USUARIOS_VLAN20/active
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO VLAN | SW-SUC-01-ACC2 VLAN 99 | existencia/nombre/estado
+       antes: running=GESTION | brief=GESTION/active
+       despues: running=GESTION | brief=GESTION/active
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO VLAN99 | SW-SUC-01-ACC2 VLAN 99 | obligatoria presente
+       antes: existe
+       despues: existe
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO GESTION | SW-SUC-01-ACC2 | IP Vlan99 + gateway
+       antes: running-ip=192.168.99.16/24 gw=192.168.99.1 brief-ip=192.168.99.16
+       despues: running-ip=192.168.99.16/24 gw=192.168.99.1 brief-ip=192.168.99.16
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO TRONCAL | SW-SUC-01-ACC2 GigabitEthernet1/1 | modo/nativa/permitidas/descripcion
+       antes: modo=trunk nativa=99 permitidas=10,20,99 desc=Hacia SW-SUC-01-ACC1 Gi1/0 - Troncal Nativa99
+       despues: modo=trunk nativa=99 permitidas=10,20,99 desc=Hacia SW-SUC-01-ACC1 Gi1/0 - Troncal Nativa99
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO TRONCAL | SW-SUC-01-ACC2 GigabitEthernet1/2 | modo/nativa/permitidas/descripcion
+       antes: modo=trunk nativa=99 permitidas=10,20,99 desc=Hacia SW-SUC-01-ACC3 Gi0/0 - Troncal Nativa99
+       despues: modo=trunk nativa=99 permitidas=10,20,99 desc=Hacia SW-SUC-01-ACC3 Gi0/0 - Troncal Nativa99
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO TRONCAL | SW-SUC-01-ACC2 (brief) | show interfaces trunk identico
+       antes: 2 troncales
+       despues: 2 troncales
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ACCESO | SW-SUC-01-ACC2 GigabitEthernet0/0 | vlan/descripcion
+       antes: vlan=10 desc=PC12 - VLAN10 modo=access
+       despues: vlan=10 desc=PC12 - VLAN10 modo=access
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ACCESO | SW-SUC-01-ACC2 GigabitEthernet0/1 | vlan/descripcion
+       antes: vlan=10 desc=PC14 - VLAN10 modo=access
+       despues: vlan=10 desc=PC14 - VLAN10 modo=access
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ACCESO | SW-SUC-01-ACC2 GigabitEthernet0/2 | vlan/descripcion
+       antes: vlan=20 desc=PC10 - VLAN20 modo=access
+       despues: vlan=20 desc=PC10 - VLAN20 modo=access
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ACCESO | SW-SUC-01-ACC2 GigabitEthernet0/3 | vlan/descripcion
+       antes: vlan=20 desc=PC11 - VLAN20 modo=access
+       despues: vlan=20 desc=PC11 - VLAN20 modo=access
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ACCESO | SW-SUC-01-ACC2 GigabitEthernet1/0 | vlan/descripcion
+       antes: vlan=99 desc=PC13 - VLAN99 modo=access
+       despues: vlan=99 desc=PC13 - VLAN99 modo=access
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO VLAN | SW-SUC-01-ACC3 VLAN 10 | existencia/nombre/estado
+       antes: running=USUARIOS_VLAN10 | brief=USUARIOS_VLAN10/active
+       despues: running=USUARIOS_VLAN10 | brief=USUARIOS_VLAN10/active
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO VLAN | SW-SUC-01-ACC3 VLAN 20 | existencia/nombre/estado
+       antes: running=USUARIOS_VLAN20 | brief=USUARIOS_VLAN20/active
+       despues: running=USUARIOS_VLAN20 | brief=USUARIOS_VLAN20/active
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO VLAN | SW-SUC-01-ACC3 VLAN 99 | existencia/nombre/estado
+       antes: running=GESTION | brief=GESTION/active
+       despues: running=GESTION | brief=GESTION/active
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO VLAN99 | SW-SUC-01-ACC3 VLAN 99 | obligatoria presente
+       antes: existe
+       despues: existe
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO GESTION | SW-SUC-01-ACC3 | IP Vlan99 + gateway
+       antes: running-ip=192.168.99.17/24 gw=192.168.99.1 brief-ip=192.168.99.17
+       despues: running-ip=192.168.99.17/24 gw=192.168.99.1 brief-ip=192.168.99.17
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO TRONCAL | SW-SUC-01-ACC3 GigabitEthernet0/0 | modo/nativa/permitidas/descripcion
+       antes: modo=trunk nativa=99 permitidas=10,20,99 desc=Hacia SW-SUC-01-ACC2 Gi1/2 - Troncal Nativa99
+       despues: modo=trunk nativa=99 permitidas=10,20,99 desc=Hacia SW-SUC-01-ACC2 Gi1/2 - Troncal Nativa99
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO TRONCAL | SW-SUC-01-ACC3 (brief) | show interfaces trunk identico
+       antes: 1 troncales
+       despues: 1 troncales
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ACCESO | SW-SUC-01-ACC3 GigabitEthernet0/1 | vlan/descripcion
+       antes: vlan=10 desc=PC16 - VLAN10 modo=access
+       despues: vlan=10 desc=PC16 - VLAN10 modo=access
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ACCESO | SW-SUC-01-ACC3 GigabitEthernet0/2 | vlan/descripcion
+       antes: vlan=99 desc=Switch2 - VLAN99 modo=access
+       despues: vlan=99 desc=Switch2 - VLAN99 modo=access
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ACCESO | SW-SUC-01-ACC3 GigabitEthernet0/3 | vlan/descripcion
+       antes: vlan=20 desc=PC17 - VLAN20 modo=access
+       despues: vlan=20 desc=PC17 - VLAN20 modo=access
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ROUTER | R-SUC-01 GigabitEthernet0/1.10 | encapsulacion/IP
+       antes: dot1Q 10 ip=192.168.10.1/24
+       despues: dot1Q 10 ip=192.168.10.1/24
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ROUTER | R-SUC-01 GigabitEthernet0/1.20 | encapsulacion/IP
+       antes: dot1Q 20 ip=192.168.20.1/24
+       despues: dot1Q 20 ip=192.168.20.1/24
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ROUTER | R-SUC-01 GigabitEthernet0/1.99 | encapsulacion/IP
+       antes: dot1Q 99 native ip=192.168.99.1/24
+       despues: dot1Q 99 native ip=192.168.99.1/24
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO ROUTER | R-SUC-01 (brief) | show ip interface brief identico
+       antes: 7 interfaces
+       despues: 7 interfaces
+       estado: elemento crítico sin cambios
+  [OK ] CRITICO RUTAS | R-SUC-01 | rutas conectadas
+       antes: 10.10.10.0/30 via GigabitEthernet0/0, 192.168.10.0/24 via GigabitEthernet0/1.10, 192.168.20.0/24 via GigabitEthernet0/1.20, 192.168.99.0/24 via GigabitEthernet0/1.99
+       despues: 10.10.10.0/30 via GigabitEthernet0/0, 192.168.10.0/24 via GigabitEthernet0/1.10, 192.168.20.0/24 via GigabitEthernet0/1.20, 192.168.99.0/24 via GigabitEthernet0/1.99
+       estado: elemento crítico sin cambios
+
+RESUMEN
+  Cambio aplicado: NO
+  Criticos sin cambios: 51 de 51
+  Diferencias (1):
+    - GigabitEthernet0/3 [descripcion]: diferencia detectada (ANTES no coincide) | en ANTES se esperaba 'PC8 - VLAN20' y se encontro 'PC8 - VLAN20 (CHG-001)'
+  CUMPLIMIENTO GLOBAL: NO CUMPLE

@@ -1,20 +1,15 @@
----
-# Cambio aprobado - Sucursal 01 (Prototipo 1)
-# Valores confirmados en variables/sucursal_01.yml y en
-# inventario/host_vars/SW-SUC-01-CORE.yml:
-#   GigabitEthernet0/1 -> vlan 10, descripcion "PC3 - VLAN10".
+# Cambio aprobado CHG-001 (lo aplica playbooks/cambio_controlado.yml).
+# Solo cambia la descripcion de un puerto; el resto debe quedar intacto.
 cambio:
   id: CHG-001
-  equipo: SW-SUC-01-CORE
-  interfaz: GigabitEthernet0/1
-  descripcion_anterior: "PC3 - VLAN10"
-  descripcion_nueva: "PC3 - VLAN10 - CHG-001"
-
-# Elementos criticos que no deben alterarse con el cambio.
+  equipo: SW-SUC-01-ACC1
+  interfaz: GigabitEthernet0/3
+  descripcion_anterior: "PC8 - VLAN20"
+  descripcion_nueva: "PC8 - VLAN20 (CHG-001)"
 criticos:
-  vlans: [10, 20, 99]        # existencia, nombre y estado; la VLAN 99 es obligatoria
-  gestion: true              # IP de Vlan99 de cada switch y default-gateway
-  troncales: true            # modo, nativa, permitidas y descripcion
-  rutas: true                # rutas conectadas del router (show ip route)
-  router_subinterfaces: true # encapsulacion e IP
-  puertos_acceso_restantes: true  # VLAN y descripcion de todos los demas puertos
+  vlans: [10, 20, 99]
+  gestion: true
+  troncales: true
+  rutas: true
+  router_subinterfaces: true
+  puertos_acceso_restantes: true
