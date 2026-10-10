@@ -1,18 +1,102 @@
-﻿# Sucursal 01 — Automatización con Ansible + análisis con Python
+# Sucursal 01 — Automatización con Ansible + análisis con Python
 
-Documentación de los cinco prototipos: `documentacion/README.md`.
+> **Resumen.** Ansible **actúa** sobre la red: configura, respalda y obtiene evidencias de los equipos. Python **analiza** esa evidencia: valida, calcula, audita, relaciona fuentes y mide. Python no configura routers ni switches, y toda evidencia, dato de entrada y resultado queda dentro de este repositorio y registrado en Git.
+>
+> Contenido: **1.** función de cada herramienta · **2.** conclusión técnica de los cinco prototipos · **3.** cuál aporta más valor a una organización con varias sedes · después, el detalle del proyecto (estructura, requisitos y ejecución). La documentación ampliada de los prototipos está en `documentacion/README.md`.
 
-## Qué hace cada parte
+---
 
-- **Ansible (aplica, respalda, obtiene evidencia):**
-  - Aplica la configuración deseada a switches y router (VLANs, puertos acceso/trunk, router-on-a-stick + DHCP).
-  - Guarda configuración (`save_when: modified`) y obtiene evidencia (`show running-config`, `show version`, `show vlan brief`, `show interfaces trunk`, `show ip interface brief`, `show ip route`) en `respaldos/`.
-- **Python (analiza la evidencia y determina cumplimiento):**
-  - No abre sesiones SSH ni configura dispositivos (salvo el prototipo 5, que solo ejecuta el `ping` del sistema); solo lee archivos.
-  - Lee el diseño esperado desde `variables/sucursal_01.yml` y la evidencia desde `respaldos/`.
-  - Audita VLAN 10, 20 y 99 (existencia, nombre, estado `active`), puertos de acceso (VLAN + descripción) y troncales (modo trunk, nativa 99, permitidas 10,20,99, descripción), más subinterfaces del router si hay evidencia.
-  - Muestra tabla por elemento con `CUMPLE / NO CUMPLE` y, si no cumple, indica esperado vs encontrado.
-  - Guarda la misma salida en `evidencias/`.
+## 1. Función de Ansible y Python dentro de la solución
+
+| | **Ansible** | **Python** |
+|---|---|---|
+| **Papel** | Consultar, configurar y obtener evidencias de los dispositivos | Analizar, organizar o producir información |
+| **¿Toca los equipos?** | Sí (SSH con `cisco.ios`) | No. Solo lee archivos (el prototipo 5 ejecuta el `ping` del sistema, que es una medición, no una configuración) |
+| **Entrada** | Inventario, variables YAML, playbooks | Diseño YAML, JSON de IPAM y evidencias guardadas por Ansible |
+| **Salida** | Configuración aplicada y archivos de evidencia en `respaldos/` y `evidencias/` | Tablas, CSV, YAML generado e informes con resultado explícito |
+| **Pregunta que responde** | «¿Cómo dejo la red en el estado deseado y qué dicen los equipos?» | «¿Lo que dicen los equipos coincide con el diseño y con las demás fuentes?» |
+
+**Ansible (aplica, respalda, obtiene evidencia):**
+- Aplica la configuración deseada a switches y router (VLANs, puertos acceso/trunk, router-on-a-stick + DHCP).
+- Guarda configuración (`save_when: modified`) y obtiene evidencia (`show running-config`, `show version`, `show vlan brief`, `show interfaces trunk`, `show ip interface brief`, `show ip route`) en `respaldos/`.
+- Es idempotente: al ejecutarlo de nuevo con el diseño ya cumplido no realiza cambios (`changed=0`).
+
+**Python (analiza la evidencia y determina cumplimiento):**
+- No abre sesiones SSH ni configura dispositivos; solo lee archivos.
+- Lee el diseño esperado desde `variables/sucursal_01.yml` y la evidencia desde `respaldos/` y `evidencias/`.
+- Audita VLAN 10, 20 y 99 (existencia, nombre, estado `active`), puertos de acceso (VLAN + descripción) y troncales (modo trunk, nativa 99, permitidas 10,20,99, descripción), más subinterfaces del router si hay evidencia.
+- Muestra tabla por elemento con `CUMPLE / NO CUMPLE` y, si no cumple, indica esperado vs encontrado.
+- Guarda la misma salida en `evidencias/`.
+
+**Flujo de trabajo:** `Ansible obtiene la evidencia → se guarda en el repositorio → Python la analiza → el resultado se guarda y se versiona en Git`.
+
+---
+
+## 2. Conclusión técnica por prototipo
+
+### Prototipo 1 — Validación antes y después de un cambio (`python/validar_cambio.py`)
+
+- **Propósito:** demostrar que un cambio aprobado ocurrió y que los elementos críticos conservaron su estado. No basta con ejecutar el cambio; hay que probar que no rompió nada.
+- **Datos:** `datos/cambio_aprobado.yml` (cambio CHG-001: en `SW-SUC-01-CORE`, interfaz Gi0/1, la descripción pasa de `PC3 - VLAN10` a `PC3 - VLAN10 - CHG-001`, más la lista de elementos críticos), `variables/sucursal_01.yml` y la evidencia en `evidencias/antes/` y `evidencias/despues/`.
+- **Resultado:** el programa emite, por condición, uno de estos veredictos: *cambio aplicado correctamente*, *elemento crítico sin cambios* o *diferencia detectada* (con valor antes y después). Los elementos críticos son las VLAN 10, 20 y 99 (en especial la 99), la IP de `Vlan99` y el `ip default-gateway` de cada switch, los troncales, las subinterfaces y rutas del router, y los demás puertos de acceso. Cualquier otra diferencia en la interfaz del cambio también se reporta. Salida en `evidencias/validacion_cambio.txt`.
+  - **Resultado de la ejecución real:** _[completar con el resumen de `python3 python/validar_cambio.py`: cambio aplicado sí/no y N de M críticos sin cambios]_
+- **Complementariedad:** Ansible toma la evidencia antes y después (`evidencia_estado.yml`) y aplica el cambio de forma idempotente (`cambio_controlado.yml`); Python compara ambos estados y decide si el cambio fue seguro. Ansible produce el hecho; Python lo verifica.
+
+### Prototipo 2 — Generación de datos para una nueva sede (`python/generar_sucursal_02.py`)
+
+- **Propósito:** producir de forma automática el plan de direccionamiento de la Sucursal 02 sin configurar ningún equipo real.
+- **Datos:** `datos/sucursal_02_entrada.yml` con el bloque `10.20.0.0/23` y los dispositivos por VLAN: 50 en ADMINISTRACION (VLAN 10), 25 en OPERACION (VLAN 20) y 10 en GESTION (VLAN 99).
+- **Resultado:** el programa suma la puerta de enlace a cada VLAN, elige la máscara más pequeña que soporta esa cantidad y asigna las subredes sin solapamiento (VLSM, de mayor a menor). Genera `variables/sucursal_02_generada.yml` y un resumen en pantalla y en `evidencias/plan_sucursal_02.txt`:
+
+  | VLAN | Nombre | Red | Máscara | Gateway | Hosts previstos | Hosts utilizables |
+  |---|---|---|---|---|---|---|
+  | 10 | ADMINISTRACION | 10.20.0.0/26 | 255.255.255.192 | 10.20.0.1 | 50 | 62 |
+  | 20 | OPERACION | 10.20.0.64/27 | 255.255.255.224 | 10.20.0.65 | 25 | 30 |
+  | 99 | GESTION | 10.20.0.96/28 | 255.255.255.240 | 10.20.0.97 | 10 | 14 |
+
+  Queda libre el rango `10.20.0.112` a `10.20.1.255`. Si los datos no caben en el bloque, el programa termina con un error que indica cuántas direcciones faltan.
+- **Complementariedad:** Python calcula (aritmética de subredes que Ansible no hace bien); el YAML generado queda listo para que Ansible lo use como variables cuando la sede se construya de verdad. Python diseña, Ansible ejecutaría.
+
+### Prototipo 3 — Auditoría de una flota pequeña (`python/auditar_flota.py`)
+
+- **Propósito:** ampliar la auditoría inicial a `R-SUC-01`, `SW-SUC-01-CORE` y `SW-SUC-01-ACC1` (con `--todos`, también ACC2 y ACC3), tratando cada equipo como una muestra de una flota mayor.
+- **Datos:** `variables/sucursal_01.yml` y, en `respaldos/`, `running-config`, `show version`, `show vlan brief`, `show interfaces trunk`, `show ip interface brief` y, en el router, `show ip route`.
+- **Resultado:** `evidencias/auditoria_flota.csv` con las columnas `equipo, condicion_evaluada, resultado, evidencia_usada, detalle_diferencia`, más una tabla legible en `evidencias/auditoria_flota.txt`. Cuando una condición no cumple, el detalle indica «esperado X, encontrado Y». Una evidencia faltante cuenta como `NO CUMPLE`, nunca se omite.
+  - **Resultado de la ejecución real:** _[completar con el resumen: total de condiciones, cuántas CUMPLE y cuántas NO CUMPLE por equipo]_
+- **Complementariedad:** Ansible recolecta de forma uniforme las mismas salidas de todos los equipos (`respaldos.yml`); Python las compara con el diseño y entrega un informe estructurado que se puede filtrar, ordenar y comparar en el tiempo.
+
+### Prototipo 4 — Relación de fuentes de información (`python/validar_inventario.py`)
+
+- **Propósito:** reproducir la lógica de integración que se hace al consultar un IPAM, inventario, DNS, nube o firewall: cruzar fuentes y detectar dónde no coinciden.
+- **Datos:** `datos/ipam_sucursal_01.json` (simula la respuesta de un IPAM por API; no es una API real), el diseño YAML (`variables/sucursal_01.yml`, `inventario/group_vars/`, `inventario/hosts.yml`) y la evidencia de Ansible en `respaldos/`. Para demostrar la detección existe `datos/ipam_sucursal_01_con_errores.json`, con **datos sintéticos de prueba**.
+- **Resultado:** la salida separa tres secciones: **coincidencias**, **faltantes** (dato presente en una fuente y ausente en otra) y **diferencias** (valores distintos entre fuentes, con el valor de cada una). Con el archivo de prueba detecta los cuatro errores sembrados: gateway de la VLAN 20 (`.254` en el IPAM frente a `.1` en el diseño y el router), IP de gestión de `SW-SUC-01-ACC1`, `SW-SUC-01-ACC3` ausente en el IPAM y un `SW-SUC-01-ACC9` que no existe en el inventario. Salida en `evidencias/validacion_inventario.txt`.
+  - **Resultado de la ejecución real con el IPAM limpio:** _[completar con coincidencias / faltantes / diferencias]_
+- **Complementariedad:** Ansible aporta el estado real de los equipos (la evidencia) y el inventario; Python lo relaciona con las otras fuentes, que están en formatos distintos (YAML, JSON, texto de CLI), algo que un playbook no hace con comodidad.
+
+### Prototipo 5 — Medición de conectividad de gestión (`python/medir_conectividad.py`)
+
+- **Propósito:** obtener un registro y una interpretación básica de la calidad de la conexión de gestión hacia los equipos, desde el servidor de automatización.
+- **Datos:** direcciones de gestión leídas de `inventario/hosts.yml` (`R-SUC-01`, `SW-SUC-01-CORE`, `SW-SUC-01-ACC1`; con `--todos`, también ACC2 y ACC3) y diez pruebas ICMP por destino.
+- **Resultado:** `evidencias/mediciones_conectividad.csv` con fecha, destino, paquetes enviados y recibidos, pérdida y latencia mínima, promedio y máxima. Cada destino se clasifica como **cumple** si no tiene pérdida y la latencia promedio es menor o igual a 50 ms; en caso contrario, **no cumple**, con el detalle de la condición que falló.
+  - **Resultado de la ejecución real:** _[completar con la tabla de destinos y su clasificación]_
+- **Complementariedad:** Ansible depende de esa conectividad para poder gestionar los equipos, y por eso la mide Python, que registra y clasifica la calidad del enlace de gestión. Ansible usa el canal; Python comprueba si está en condiciones.
+
+---
+
+## 3. ¿Cuál aporta más valor a una organización con múltiples sedes?
+
+**Ansible aporta más valor como base, y Python lo multiplica.** Si hubiera que elegir una sola herramienta para una organización con muchas sedes, la elección sería Ansible, por estas razones:
+
+1. **Escala con el mismo trabajo.** Un playbook y un inventario sirven para una sede o para cien: agregar una sede es agregar sus variables, no escribir otro procedimiento. El prototipo 2 lo muestra: genera las variables de la Sucursal 02 y los mismos playbooks de la Sucursal 01 se podrían reutilizar.
+2. **Garantiza consistencia.** El estado deseado está declarado y es idempotente, lo que elimina la deriva de configuración y los errores de captura manual, que son el principal riesgo de operar muchas sedes.
+3. **Es la única herramienta que cambia el estado de la red y obtiene la evidencia.** Python no puede analizar lo que Ansible no recolectó, mientras que Ansible funciona sin Python.
+4. **Reduce tiempo y riesgo operativo.** Un cambio aprobado se aplica y se respalda de forma repetible y auditable en todas las sedes.
+
+**Matiz importante:** el valor de Python crece con el número de sedes. Revisar a mano la configuración de cientos de equipos no es viable. Python permite auditar la flota en CSV, validar cada cambio contra un estado crítico, planificar direccionamiento y cruzar la red real con el IPAM y el inventario. Una red configurada con Ansible pero sin verificación con Python es una red cuya conformidad se asume, no se demuestra. Por eso la solución completa es la combinación: **Ansible hace que la red esté como debe estar; Python demuestra que lo está.**
+
+---
+
+## Detalle del proyecto
 
 ## Estructura del proyecto
 
